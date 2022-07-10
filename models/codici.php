@@ -12,7 +12,7 @@ class Codici extends Database {
 
     function fromIscritto($iscritto) {
         return $this->select(
-            "SELECT codice AS `codice`, iscritto, id_settimana FROM " . self::$table_name . 
+            "SELECT codice AS `codice`, iscritto, id_settimana, expired FROM " . self::$table_name . 
             " WHERE iscritto = :iscritto", 
             array(
                 array(':iscritto', $iscritto, PDO::PARAM_INT)
@@ -22,7 +22,7 @@ class Codici extends Database {
 
     function fromCodice($codice) {
         return $this->select(
-            "SELECT codice AS `codice`, iscritto, id_settimana FROM " . self::$table_name . 
+            "SELECT codice AS `codice`, iscritto, id_settimana, expired FROM " . self::$table_name . 
             " WHERE codice = :codice",
             array(
                 array(':codice', $codice, PDO::PARAM_STR)
