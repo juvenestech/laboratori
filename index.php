@@ -25,11 +25,16 @@ if (isset($_GET['done'])) {
     $path .= "/models/laboratori.php";
     include_once $path;
 
-    $laboratori = new Laboratori();
-    $lista = $laboratori->fromCodice($_GET['codice']);
+    echo (new Codici())->fromCodice($_GET['codice']);
+    $codice = (new Codici())->fromCodice($_GET['codice']);
+    if (!$codice || $codice[0]['expired']) {
+        $STATO = 'EXPIRED';
+    } else {
+        $lista = (new Laboratori())->fromCodice($_GET['codice']);
 
-    if (!$lista) $STATO = 'NOLABORATORI';
-    else $STATO = 'OK';
+        if (!$lista) $STATO = 'NOLABORATORI';
+        else $STATO = 'OK';
+    }
 }
 ?>
 
