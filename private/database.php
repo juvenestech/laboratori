@@ -10,7 +10,7 @@ class Database
 
     function __construct()
     {
-        include_once "config.php";
+        include "config.php";
         $this->host = $_DB_HOST;
         $this->db_name = $_DB_NAME;
         $this->username = $_DB_USERNAME;
@@ -18,9 +18,14 @@ class Database
         $this->connect();
     }
 
-    public function connect()
+    public function disconnect()
     {
         $this->conn = null;
+    }
+
+    public function connect()
+    {
+        $this->disconnect();
 
         try {
             $this->conn = new PDO(
@@ -37,6 +42,7 @@ class Database
 
         return $this->conn;
     }
+    
 
     public function select($query = "", $params = [])
     {
