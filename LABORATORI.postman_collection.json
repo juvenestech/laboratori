@@ -1,0 +1,441 @@
+{
+	"info": {
+		"_postman_id": "087a7ad9-ded8-48dc-a1d8-b64f9382ea2a",
+		"name": "LABORATORI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17087275"
+	},
+	"item": [
+		{
+			"name": "ATTIVITA",
+			"item": [
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nome",
+									"value": "nome1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost/api/attivita",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"attivita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/attivita?id=1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"attivita"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromGiorno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/attivita?giorno=1&settimana=1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"attivita"
+							],
+							"query": [
+								{
+									"key": "giorno",
+									"value": "1"
+								},
+								{
+									"key": "settimana",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromLaboratorio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/attivita?id_laboratorio=1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"attivita"
+							],
+							"query": [
+								{
+									"key": "id_laboratorio",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CODICI",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/codici",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"codici"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromCodice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/codici?codice=d1923ca5-e3a0-11ec-9ba7-40167e880aaf",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"codici"
+							],
+							"query": [
+								{
+									"key": "codice",
+									"value": "d1923ca5-e3a0-11ec-9ba7-40167e880aaf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCodice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "iscritto",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "id_settimana",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost/api/codici",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"codici"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LABORATORI",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/laboratori",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"laboratori"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/laboratori?id=1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"laboratori"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromSettimana",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/laboratori?id_settimana=1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"laboratori"
+							],
+							"query": [
+								{
+									"key": "id_settimana",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SCELTE",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/scelte",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"scelte"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/scelte?id=1",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"scelte"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromCodice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/api/scelte?codice=93b1e307-e39f-11ec-9ba7-40167e880aaf",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"scelte"
+							],
+							"query": [
+								{
+									"key": "codice",
+									"value": "93b1e307-e39f-11ec-9ba7-40167e880aaf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addScelta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codice",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "codice",
+									"value": "93b1e307-e39f-11ec-9ba7-40167e880aaf",
+									"type": "text"
+								},
+								{
+									"key": "id_laboratorio",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost/api/scelte",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"scelte"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HASHER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/hasher",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"hasher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/login",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
