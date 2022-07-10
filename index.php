@@ -22,17 +22,24 @@ if (isset($_GET['done'])) {
     $STATO = 'NOCODICE';
 } else {
     $path = $_SERVER['DOCUMENT_ROOT'];
-    $path .= "/models/laboratori.php";
+    $path .= "/models/codici.php";
     include_once $path;
 
-    echo (new Codici())->fromCodice($_GET['codice']);
-    $codice = (new Codici())->fromCodice($_GET['codice']);
-    if (!$codice || $codice[0]['expired']) {
+    $codici = new Codici();
+    $codice = $codici->fromCodice($_GET['codice']);
+    if (!$codice) {
+        $STATO = 'NONVALIDO';
+    } if ($codice[0]['expired']) {
         $STATO = 'EXPIRED';
     } else {
-        $lista = (new Laboratori())->fromCodice($_GET['codice']);
+        $path = $_SERVER['DOCUMENT_ROOT'];
+        $path .= "/models/laboratori.php";
+        include_once $path;
 
-        if (!$lista) $STATO = 'NOLABORATORI';
+        $laboratori = new Laboratori();
+        $lista = $laboratori->fromCodice($_GET['codice']);
+
+        if (!$lista) $STATO = 'NONVALIDO';
         else $STATO = 'OK';
     }
 }
@@ -49,6 +56,7 @@ if (isset($_GET['done'])) {
                         if ($STATO == 'DONE') echo 'Grazie per aver inviato le tue preferenze!';
                         elseif ($STATO == 'OK') echo 'Scegli i laboratori che più ti piacciono!';
                         elseif ($STATO == 'NOCODICE') echo 'Inserisci il tuo codice';
+                        elseif ($STATO == 'EXPIRED') echo 'Il codice inserito è scaduto<br>Immetti un codice valido';
                         else echo 'Il codice inserito non è valido<br>Immetti il tuo codice';
                         ?>
                     </p>
@@ -57,7 +65,7 @@ if (isset($_GET['done'])) {
                     <?php
                     if ($STATO == 'OK')
                         foreach ($lista as $lab)
-                            echo '<div class="col-sm-6 item">
+                            echo '<div class="col-sm-6 d-flex item">
                                 <div class="row laboratorio" lab="' . $lab['id'] . '">
                                     <input type="checkbox" style="display:none"></input>
                                     <div class="col-md-12 col-lg-5 d-flex align-items-center"><img class="img-fluid" src="' . $lab['gif'] . '"></div>
