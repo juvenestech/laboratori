@@ -19,6 +19,15 @@ class Scelte extends Database {
         );
     }
 
+    function fromAttivita($id_attivita) {
+        return $this->select(
+            "SELECT * FROM " .self::$table_name . " WHERE id_attivita = :id_attivita",
+            array(
+                array(':id_attivita', $id_attivita, PDO::PARAM_INT)
+            )
+        );
+    }
+
     function fromCodice($codice) {
         return $this->select(
             "SELECT * FROM " .self::$table_name . " WHERE codice = :codice",
@@ -28,12 +37,12 @@ class Scelte extends Database {
         );
     }
 
-    function addScelta($codice, $id_laboratorio){
+    function addScelta($codice, $laboratorio){
         $this->insert(
-            "INSERT INTO " . self::$table_name . " (codice, id_laboratorio) VALUES (:codice, :id_laboratorio)",
+            "INSERT INTO " . self::$table_name . " (codice, id_laboratorio) VALUES (:codice, :laboratorio)",
             array(
                 array(':codice', $codice, PDO::PARAM_STR),
-                array(':id_laboratorio', $id_laboratorio, PDO::PARAM_INT)
+                array(':laboratorio', $laboratorio, PDO::PARAM_INT)
             )
         );
         return $this->fromCodice($codice);

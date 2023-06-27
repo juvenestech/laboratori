@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (isset($_GET['id']))
         $ret = $laboratori->fromId($_GET['id']);
-    elseif (isset($_GET['id_settimana']))
-        $ret = $laboratori->fromSettimana($_GET['id_settimana']);
+    elseif (isset($_GET['settimana']))
+        $ret = $laboratori->fromSettimana($_GET['settimana']);
     elseif (isset($_GET['codice']))
         $ret = $laboratori->fromCodice($_GET['codice']);
     else

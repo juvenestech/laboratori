@@ -66,7 +66,7 @@ if (isset($_GET['done'])) {
                     if ($STATO == 'OK')
                         foreach ($lista as $lab)
                             echo '<div class="col-sm-6 d-flex item">
-                                <div class="row laboratorio" lab="' . $lab['id'] . '">
+                                <div class="row laboratorio" attivita="' . $lab['id'] . '">
                                     <input type="checkbox" style="display:none"></input>
                                     <div class="col-md-12 col-lg-5 d-flex align-items-center"><img class="img-fluid" src="' . $lab['gif'] . '"></div>
                                     <div class="col">

@@ -8,12 +8,16 @@ Restituisce la lista di tutte le attività
 Restituisce l'attività con il dato `id`
 - 200: Success
 - 400: No result
-### `[GET] ?giorno=<giorno>&settimana=<settimana>`
-Restituisce le attività di un dato `giorno` e `settimana`
+### `[GET] ?giorno=<giorno>`
+Restituisce le attività di un dato `giorno`
 - 200: Success
 - 400: No result
-### `[GET] ?id_laboratorio=<id_laboratorio>`
-Restituisce l'attività con il dato `id_laboratorio`
+### `[GET] ?settimana=<settimana>`
+Restituisce le attività di una data `settimana`
+- 200: Success
+- 400: No result
+### `[GET] ?laboratorio=<laboratorio>`
+Restituisce l'attività con il dato `laboratorio`
 - 200: Success
 - 400: No result
 <hr/>
@@ -35,8 +39,8 @@ Restituisce i codici associati al dato `iscritto`<br/>
 - 200: Success
 - 400: No result
 - 401: Unauthorized
-### `[POST] form-data: iscritto=<iscritto>&id_settimana=<id_settimana>` 
-Crea un nuovo codice per `iscritto`, `id_settimana`. Restituisce la lista di tutti i codici per il dato `iscritto`<br/>
+### `[POST] form-data: iscritto=<iscritto>&settimana=<settimana>` 
+Crea un nuovo codice per `iscritto`, `settimana`. Restituisce la lista di tutti i codici per il dato `iscritto`<br/>
 **⚠ AUTH REQUIRED**
 - 200: Success
 - 400: No result
@@ -52,9 +56,12 @@ Restituisce la lista di tutti i laboratori
 Restituisce il laboratorio con il dato `id`
 - 200: Success
 - 400: No result
+### `[GET] ?settimana=<settimana>`
+Restituisce i laboratori in una data `settimana`
+- 200: Success
 - 400: No result
-### `[GET] ?id_settimana=<id_settimana>`
-Restituisce i laboratori in una data `id_settimana`
+### `[GET] ?codice=<codice>`
+Restituisce i laboratori visibili per un dato `codice`
 - 200: Success
 - 400: No result
 <hr/>
@@ -72,11 +79,30 @@ Restituisce la scelta con il dato `id`<br/>
 - 200: Success
 - 400: No result
 - 401: Unauthorized
-### `[GET] ?codice=<codice>`
-Restituisce le scelta con il dato `codice`<br/>
+### `[GET] ?attivita=<attivita>`
+Restituisce le scelte di una data `attivita`<br/>
+**⚠ AUTH REQUIRED**
 - 200: Success
 - 400: No result
-### `[POST] form-data: codice=<codice>&id_laboratorio=<id_laboratorio>`
-Inserisce la scelta per `codice`, `id_laboratorio`. Restituisce la lista di tutte le scelte per il dato `codice`<br/>
+- 401: Unauthorized
+### `[GET] ?codice=<codice>`
+Restituisce le scelte con il dato `codice`<br/>
+- 200: Success
+- 400: No result
+### `[POST] form-data: codice=<codice>&laboratorio=<laboratorio>`
+Inserisce la scelta per `codice`, `laboratorio`. Restituisce la lista di tutte le scelte per il dato `codice`<br/>
+- 200: Success
+- 400: No result
+
+<hr/>
+
+## `/api/giorni`
+### `[GET]` 
+Restituisce la lista dei `giorni`<br/>
+- 200: Success
+- 400: No result
+
+### `[GET] ?settimana=<settimana>` 
+Restituisce la lista dei `giorni` della `settimana`<br/>
 - 200: Success
 - 400: No result

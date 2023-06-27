@@ -19,21 +19,41 @@ class Attivita extends Database {
         );
     }
 
-    function fromData($settimana, $giorno) {
+    function fromGiorno($giorno) {
         return $this->select(
             "SELECT `attivita`.* 
             FROM `attivita` 
-                INNER JOIN `laboratori` 
-                    ON attivita.id_laboratorio = `laboratori`.id
-                INNER JOIN `giorni`
-                    ON `laboratori`.id_giorno = `giorni`.id
-                INNER JOIN `settimane`
-                    ON `giorni`.id_settimana = `settimane`.id
-            WHERE `settimane`.id = :settimana
-                AND `giorni`.id = :giorno", 
+            WHERE AND `attivita`.id_giorno = :giorno", 
             array(
-                array(':settimana', $settimana, PDO::PARAM_INT), 
                 array(':giorno', $giorno, PDO::PARAM_INT)
+            )
+        );
+    }
+    
+    function fromSettimana($settimana) {
+        return $this->select(
+            "SELECT `attivita`.* 
+            FROM `attivita` 
+                INNER JOIN `giorni` ON `attivita`.id_giorno = `giorni`.id
+            WHERE AND `giorni`.id_settimana = :settimana", 
+            array(
+                array(':settimana', $settimana, PDO::PARAM_INT)
+            )
+        );
+    }
+
+    function fromCodice($codice) {
+        return $this->select(
+            "SELECT DISTINCT `attivita`.* 
+            FROM `attivita`
+                INNER JOIN `giorni`
+                    ON `attivita`.`id_giorno` = `giorni`.id  
+            WHERE `giorni`.`id_settimana` = (
+                SELECT `id_settimana` FROM `codici`
+                WHERE `codici`.`codice` = :codice
+            )", 
+            array(
+                array(':codice', $codice, PDO::PARAM_STR)
             )
         );
     }

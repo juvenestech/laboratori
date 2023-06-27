@@ -30,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (isset($_GET['id']))
         $ret = $scelte->fromId($_GET['id']);
+    elseif (isset($_GET['attivita']))
+        $ret = $scelte->fromAttivita($_GET['attivita']);
     else
         $ret = $scelte->getAll();
 
@@ -38,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $scelte = new Scelte();
 
-    if(isset($_POST['codice']) && isset($_POST['id_laboratorio'])) {
-        $ret = $scelte->addScelta($_POST['codice'], $_POST['id_laboratorio']);
+    if(isset($_POST['codice']) && isset($_POST['laboratorio'])) {
+        $ret = $scelte->addScelta($_POST['codice'], $_POST['laboratorio']);
     } else {
         http_response_code(400);
     }

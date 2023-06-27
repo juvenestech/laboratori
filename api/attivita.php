@@ -15,10 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (isset($_GET['id']))
         $ret = $attivita->fromId($_GET['id']);
-    elseif (isset($_GET['settimana']) && isset($_GET['giorno']))
-        $ret = $attivita->fromData($_GET['settimana'], $_GET['giorno']);
-    elseif (isset($_GET['id_laboratorio']))
-        $ret = $attivita->fromLaboratorio($_GET['id_laboratorio']);
+    elseif (isset($_GET['giorno']))
+        $ret = $attivita->fromGiorno($_GET['giorno']);
+    elseif (isset($_GET['settimana']))
+        $ret = $attivita->fromSettimana($_GET['settimana']);
+    elseif (isset($_GET['laboratorio']))
+        $ret = $attivita->fromLaboratorio($_GET['laboratorio']);
+    elseif (isset($_GET['codice']))
+        $ret = $attivita->fromCodice($_GET['codice']);
     else
         $ret = $attivita->getAll();
 

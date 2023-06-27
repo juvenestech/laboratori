@@ -15,12 +15,12 @@ $('.laboratorio').click(function () {
 })
 $.get("api/scelte?codice=" + codice, (scelte) =>{
     scelte.forEach(scelta => {
-        $('.laboratorio[lab="' + scelta.id_laboratorio + '"]')
+        $('.laboratorio[lab="' + scelta.attivita + '"]')
             .click()
             .addClass('choosen')
             .append(`
                 <div class="col-12 choosenMessage">
-                    Hai gi&agrave; scelto questo laboratorio.
+                    Hai gi&agrave; scelto questa attivit&agrave;.
                 </div>`
             ); 
     });
@@ -30,10 +30,10 @@ $.get("api/scelte?codice=" + codice, (scelte) =>{
 async function inviaScelte() {
     var scelte = $(".laboratorio > input:checked");
     await Promise.all(scelte.map(async (i, e) => {
-        console.log($(e).parent().attr('lab'))
+        console.log($(e).parent().attr('attivita'))
         var data = new FormData();
         data.append('codice', codice);
-        data.append('id_laboratorio', $(e).parent().attr('lab'));
+        data.append('attivita', $(e).parent().attr('attivita'));
 
         return $.ajax({
             "url": "api/scelte",
