@@ -38,13 +38,17 @@ class Scelte extends Database {
     }
 
     function addScelta($codice, $laboratorio){
-        $this->insert(
-            "INSERT INTO " . self::$table_name . " (codice, id_laboratorio) VALUES (:codice, :laboratorio)",
-            array(
-                array(':codice', $codice, PDO::PARAM_STR),
-                array(':laboratorio', $laboratorio, PDO::PARAM_INT)
-            )
-        );
+        try {
+            $this->insert(
+                "INSERT INTO " . self::$table_name . " (codice, id_laboratorio) VALUES (:codice, :laboratorio)",
+                array(
+                    array(':codice', $codice, PDO::PARAM_STR),
+                    array(':laboratorio', $laboratorio, PDO::PARAM_INT)
+                )
+            );
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
         return $this->fromCodice($codice);
     }
 }

@@ -1,26 +1,4 @@
 # API
-## `/api/attivita`
-### `[GET]` 
-Restituisce la lista di tutte le attività
-- 200: Success
-- 400: No result
-### `[GET] ?id=<id>`
-Restituisce l'attività con il dato `id`
-- 200: Success
-- 400: No result
-### `[GET] ?giorno=<giorno>`
-Restituisce le attività di un dato `giorno`
-- 200: Success
-- 400: No result
-### `[GET] ?settimana=<settimana>`
-Restituisce le attività di una data `settimana`
-- 200: Success
-- 400: No result
-### `[GET] ?laboratorio=<laboratorio>`
-Restituisce l'attività con il dato `laboratorio`
-- 200: Success
-- 400: No result
-<hr/>
 
 ## `/api/codici`
 ### `[GET]` 
@@ -91,18 +69,5 @@ Restituisce le scelte con il dato `codice`<br/>
 - 400: No result
 ### `[POST] form-data: codice=<codice>&laboratorio=<laboratorio>`
 Inserisce la scelta per `codice`, `laboratorio`. Restituisce la lista di tutte le scelte per il dato `codice`<br/>
-- 200: Success
-- 400: No result
-
-<hr/>
-
-## `/api/giorni`
-### `[GET]` 
-Restituisce la lista dei `giorni`<br/>
-- 200: Success
-- 400: No result
-
-### `[GET] ?settimana=<settimana>` 
-Restituisce la lista dei `giorni` della `settimana`<br/>
 - 200: Success
 - 400: No result

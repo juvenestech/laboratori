@@ -41,12 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $scelte = new Scelte();
 
     if(isset($_POST['codice']) && isset($_POST['laboratorio'])) {
-        $ret = $scelte->addScelta($_POST['codice'], $_POST['laboratorio']);
+        try {
+            $ret = $scelte->addScelta($_POST['codice'], $_POST['laboratorio']);
+            echo json_encode($ret);
+            if(!$ret) http_response_code(400);
+        } catch (Exception $e) {
+            http_response_code(400);
+            echo $e->getCode();
+        }
     } else {
         http_response_code(400);
     }
-
-    echo json_encode($ret);
-    if(!$ret) http_response_code(400);
 } else
     http_response_code(404);
