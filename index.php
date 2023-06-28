@@ -29,7 +29,7 @@ if (isset($_GET['done'])) {
     $codice = $codici->fromCodice($_GET['codice']);
     if (!$codice) {
         $STATO = 'NONVALIDO';
-    } if ($codice[0]['expired']) {
+    } else if ($codice[0]['expired']) {
         $STATO = 'EXPIRED';
     } else {
         $path = $_SERVER['DOCUMENT_ROOT'];
@@ -54,7 +54,7 @@ if (isset($_GET['done'])) {
                     <p class="text-center" style="font-family: Montserrat, sans-serif;">
                         <?php
                         if ($STATO == 'DONE') echo 'Grazie per aver inviato le tue preferenze!';
-                        elseif ($STATO == 'OK') echo 'Scegli i laboratori che più ti piacciono!';
+                        elseif ($STATO == 'OK') echo 'Scegli i 4 laboratori che più ti piacciono!';
                         elseif ($STATO == 'NOCODICE') echo 'Inserisci il tuo codice';
                         elseif ($STATO == 'EXPIRED') echo 'Il codice inserito è scaduto<br>Immetti un codice valido';
                         else echo 'Il codice inserito non è valido<br>Immetti il tuo codice';
@@ -63,10 +63,10 @@ if (isset($_GET['done'])) {
                 </div>
                 <div class="row projects">
                     <?php
-                    if ($STATO == 'OK')
+                if ($STATO == 'OK')
                         foreach ($lista as $lab)
                             echo '<div class="col-sm-6 d-flex item">
-                                <div class="row laboratorio" attivita="' . $lab['id'] . '">
+                                <div class="row laboratorio" lab="' . $lab['id'] . '">
                                     <input type="checkbox" style="display:none"></input>
                                     <div class="col-md-12 col-lg-5 d-flex align-items-center"><img class="img-fluid" src="' . $lab['gif'] . '"></div>
                                     <div class="col">
@@ -85,15 +85,53 @@ if (isset($_GET['done'])) {
                     ?>
                 </div>
                 <?php
-                if ($STATO != 'DONE') echo '<div class="row text-center">
-                    <div class="col" style="margin: 10px;">
-                        <button id="conferma" class="btn btn-dark border-dark" type="button">CONFERMA</button>
-                    </div>
-                </div>'
+                if ($STATO != 'DONE') {
+                    echo '<div class="row text-center">
+                        <div class="col" style="margin: 10px;">
+                            <button id="conferma" class="btn btn-dark border-dark" type="button">CONFERMA</button>
+                        </div>
+                    </div>';
+                } else {
+                    $path = $_SERVER['DOCUMENT_ROOT'];
+                    $path .= "/models/scelte.php";
+                    include_once $path;
+
+                    $scelte = new Scelte();
+                    $lista = $scelte->fromCodice($_GET['done']);
+
+                    $path = $_SERVER['DOCUMENT_ROOT'];
+                    $path .= "/models/laboratori.php";
+                    include_once $path;
+
+                    $laboratori = new Laboratori();
+                    echo 'Ecco le tue scelte:<ul>';
+                    foreach ($lista as $scelta) 
+                        echo '<li>' . $laboratori->fromId($scelta['id_laboratorio'])[0]['nome'] . '</li>';
+                    echo '</ul>';
+                    echo '<small>Per qualsiasi dubbio, scrivi a <a href="mailto:iscrizioni+laboratori@juvenes.it">iscrizioni+laboratori@juvenes.it</a> o contatta un educatore.</small>';
+                }
                 ?>
             </form>
         </div>
     </section>
+
+        
+    <div class="modal fade" id="modalErrore" tabindex="-1" aria-labelledby="modalErrore" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalErroreLabel">Errore</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="testoErrore">
+            Si &egrave; verificato un errore!
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+        </div>
+    </div>
+    </div>
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

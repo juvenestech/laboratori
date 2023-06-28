@@ -8,6 +8,10 @@
     background: radial-gradient(circle at center, #8a660280 24%, #f77e0580 100%);
 }
 
+.laboratorio.completo {
+    background: radial-gradient(circle at center, #8a660280 24%, #f7050580 100%);
+}
+
 .laboratorio {
     transition: transform 0.3s ease-in-out;
     transform: scale(1.0);

@@ -34,6 +34,10 @@ Restituisce la lista di tutti i laboratori
 Restituisce il laboratorio con il dato `id`
 - 200: Success
 - 400: No result
+### `[GET] ?settimana=<settimana>`
+Restituisce i laboratori in una data `settimana`
+- 200: Success
+- 400: No result
 ### `[GET] ?codice=<codice>`
 Restituisce i laboratori visibili per un dato `codice`
 - 200: Success
