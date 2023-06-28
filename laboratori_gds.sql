@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 27, 2023 alle 23:09
+-- Creato il: Giu 28, 2023 alle 23:57
 -- Versione del server: 10.4.27-MariaDB
 -- Versione PHP: 8.2.0
 
@@ -21,6 +21,28 @@ SET time_zone = "+00:00";
 -- Database: `laboratori_gds`
 --
 
+DELIMITER $$
+--
+-- Funzioni
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `BIN_TO_UUID` (`b` BINARY(16)) RETURNS CHAR(36) CHARSET utf8mb4 COLLATE utf8mb4_general_ci  BEGIN
+   DECLARE hexStr CHAR(32);
+   SET hexStr = HEX(b);
+   RETURN LOWER(CONCAT(
+        SUBSTR(hexStr, 1, 8), '-',
+        SUBSTR(hexStr, 9, 4), '-',
+        SUBSTR(hexStr, 13, 4), '-',
+        SUBSTR(hexStr, 17, 4), '-',
+        SUBSTR(hexStr, 21)
+    ));
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `UUID_TO_BIN` (`uuid` CHAR(36)) RETURNS BINARY(16)  BEGIN
+    RETURN UNHEX(REPLACE(uuid, '-', ''));
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -28,26 +50,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `codici` (
-  `codice` varchar(48) NOT NULL,
+  `codice` varchar(48) NOT NULL DEFAULT uuid(),
   `iscritto` int(11) NOT NULL,
   `id_settimana` int(11) NOT NULL,
   `expired` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `codici`
---
-
-INSERT INTO `codici` (`codice`, `iscritto`, `id_settimana`, `expired`) VALUES
-('00000000-0000-0000-0000-222222222222', 0, 2, 0);
-
---
--- Trigger `codici`
---
-DELIMITER $$
-CREATE TRIGGER `before_insert_mytable` BEFORE INSERT ON `codici` FOR EACH ROW SET new.`codice` = BIN_TO_UUID(RANDOM_BYTES(16))
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -60,7 +67,7 @@ CREATE TABLE `laboratori` (
   `nome` varchar(32) NOT NULL,
   `descrizione` varchar(512) DEFAULT NULL,
   `gif` varchar(512) DEFAULT NULL,
-  `posti` int(11) NOT NULL DEFAULT 10
+  `posti` int(11) NOT NULL DEFAULT 40
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -68,19 +75,19 @@ CREATE TABLE `laboratori` (
 --
 
 INSERT INTO `laboratori` (`id`, `nome`, `descrizione`, `gif`, `posti`) VALUES
-(1, 'Pasta sale', 'Sale, farina e acqua… sono ingredienti che non mancano mai in una dispensa! La pasta sale è un’alternativa naturale alla plastilina, che ti permette di divertirti modellando e decorando le proprie creazioni. ', 'assets/img/gif/pasta sale.gif', 10),
-(2, 'Braccialetti', 'Fili, elastici, perline e tanta voglia di fare sono gli unici ingredienti necessari per creare un bellissimo braccialetto. Potrai realizzare un gioiello per te stesso oppure portare un regalo fai da te ad amici e parenti. ', 'assets/img/gif/braccialetti.gif', 10),
-(3, 'Pirografia', 'Prova anche tu una tecnica che, per mezzo di una fonte di calore, permette di incidere su una superficie di legno. Lasciati alle spalle i banali fogli di carta e iniziate a disegnare sul legno, così da essere più originali che mai. ', 'assets/img/gif/pirografia.gif', 10),
-(4, 'Magliette tie dye', 'Sei stufi delle banali magliette bianche? In questo laboratorio potrai creare la tua maglietta come più ti piace, con colori sgargianti e fantasie alla moda.', 'assets/img/gif/magliette.gif', 10),
-(5, 'Rompicapi', 'Tra tanti laboratori creativi ci vuole uno per mettere in gioco la propria intelligenza, cercando di risolvere rompicapi, dai più semplici ai più complessi.', 'assets/img/gif/rompicapi.gif', 10),
-(6, 'Magliette tie dye', 'Se sei amante degli animali, in particolare degli insetti, devi sapere che al quinto piano del Rainerum ci sono decine di alveari! In questo laboratorio potrai entrare in contatto direttamente con le api e scoprire di più del loro fantastico mondo. ', 'assets/img/gif/apicoltura.gif', 10),
-(7, 'Stecchini', 'Dopo aver mangiato un ghiacciolo siamo abituati a buttare lo stecchino, ma se ti dicessi che c’è un modo per utilizzarli in modo creativo? In questo laboratorio potrai creare moltissime costruzioni con gli stecchini!', 'assets/img/gif/stecchini.gif', 10),
-(8, 'Oculus', 'Indossando l\'apposito oculare, potrai giocare e immergerti in un\'esperienza in realtà virtuale.', 'assets/img/gif/oculus.gif', 5),
-(9, 'Giocoleria', 'Avete presenti i giocolieri che si esibiscono nei circhi? In questo laboratorio si può imparare ad esibirsi come loro, usando il piattino, il diablo e molto altro. ', 'assets/img/gif/giocoleria.gif', 10),
-(10, 'Antistress', 'Creare antistress è un’attività molto utile, in vista dello stress che la vita può procurare. Inserendo riso oppure farina all’interno di un palloncino si può creare un oggetto morbido, da schiacciare nei momenti di stress. ', 'assets/img/gif/pirografia.gif', 10),
-(11, 'Perline', 'Con delle perline di plastica si possono creare figure colorate e buffe. Successivamente, passandoci sopra il ferro da stiro, le creazioni si solidificano e si possono usare come decorazioni casalinghe.', 'assets/img/gif/perline.gif', 10),
-(12, 'Acchiappasogni', 'Gli acchiappasogni sono creazioni associate alle tribù indigene del nord, con fili, piume e perline potrete creare il vostro e fare sogni tranquilli ogni notte!', 'assets/img/gif/acchiappasogni.gif', 10),
-(13, 'Filografia', 'Scopri uno splendido modo di decorare una lastra di legno: si crea un disegno piantando alcuni chiodi e si fa passare il filo intorno ad essi. Al termine del lavoro otterrete un disegno colorato e originale.', 'assets/img/gif/filografia.gif', 10);
+(1, 'Pasta sale', 'Sale, farina e acqua… sono ingredienti che non mancano mai in una dispensa! La pasta sale è un’alternativa naturale alla plastilina, che ti permette di divertirti modellando e decorando le proprie creazioni. ', 'assets/img/gif/pasta sale.gif', 40),
+(2, 'Braccialetti', 'Fili, elastici, perline e tanta voglia di fare sono gli unici ingredienti necessari per creare un bellissimo braccialetto. Potrai realizzare un gioiello per te stesso oppure portare un regalo fai da te ad amici e parenti. ', 'assets/img/gif/braccialetti.gif', 40),
+(3, 'Pirografia', 'Prova anche tu una tecnica che, per mezzo di una fonte di calore, permette di incidere su una superficie di legno. Lasciati alle spalle i banali fogli di carta e iniziate a disegnare sul legno, così da essere più originali che mai. ', 'assets/img/gif/pirografia.gif', 40),
+(4, 'Magliette tie dye', 'Sei stufi delle banali magliette bianche? In questo laboratorio potrai creare la tua maglietta come più ti piace, con colori sgargianti e fantasie alla moda.', 'assets/img/gif/magliette tie-dye.gif', 40),
+(5, 'Rompicapi', 'Tra tanti laboratori creativi ci vuole uno per mettere in gioco la propria intelligenza, cercando di risolvere rompicapi, dai più semplici ai più complessi.', 'assets/img/gif/rompicapi.gif', 40),
+(6, 'Apicoltura', 'Se sei amante degli animali, in particolare degli insetti, devi sapere che al quinto piano del Rainerum ci sono decine di alveari! In questo laboratorio potrai entrare in contatto direttamente con le api e scoprire di più del loro fantastico mondo. ', 'assets/img/gif/apicoltura.gif', 40),
+(7, 'Stecchini', 'Dopo aver mangiato un ghiacciolo siamo abituati a buttare lo stecchino, ma se ti dicessi che c’è un modo per utilizzarli in modo creativo? In questo laboratorio potrai creare moltissime costruzioni con gli stecchini!', 'assets/img/gif/stecchini.gif', 40),
+(8, 'Oculus', 'Indossando l\'apposito oculare, potrai giocare e immergerti in un\'esperienza in realtà virtuale.', 'assets/img/gif/oculus.gif', 20),
+(9, 'Giocoleria', 'Avete presenti i giocolieri che si esibiscono nei circhi? In questo laboratorio si può imparare ad esibirsi come loro, usando il piattino, il diablo e molto altro. ', 'assets/img/gif/giocoleria.gif', 40),
+(10, 'Antistress', 'Creare antistress è un’attività molto utile, in vista dello stress che la vita può procurare. Inserendo riso oppure farina all’interno di un palloncino si può creare un oggetto morbido, da schiacciare nei momenti di stress. ', 'assets/img/gif/pirografia.gif', 40),
+(11, 'Perline', 'Con delle perline di plastica si possono creare figure colorate e buffe. Successivamente, passandoci sopra il ferro da stiro, le creazioni si solidificano e si possono usare come decorazioni casalinghe.', 'assets/img/gif/perline.gif', 40),
+(12, 'Acchiappasogni', 'Gli acchiappasogni sono creazioni associate alle tribù indigene del nord, con fili, piume e perline potrete creare il vostro e fare sogni tranquilli ogni notte!', 'assets/img/gif/acchiappasogni.gif', 40),
+(13, 'Filografia', 'Scopri uno splendido modo di decorare una lastra di legno: si crea un disegno piantando alcuni chiodi e si fa passare il filo intorno ad essi. Al termine del lavoro otterrete un disegno colorato e originale.', 'assets/img/gif/filografia.gif', 40);
 
 -- --------------------------------------------------------
 
@@ -94,13 +101,6 @@ CREATE TABLE `scelte` (
   `codice` varchar(48) NOT NULL,
   `id_laboratorio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `scelte`
---
-
-INSERT INTO `scelte` (`id`, `timestamp`, `codice`, `id_laboratorio`) VALUES
-(18, '2023-06-27 22:59:29', '00000000-0000-0000-0000-222222222222', 13);
 
 --
 -- Trigger `scelte`
@@ -203,13 +203,13 @@ ALTER TABLE `settimane`
 -- AUTO_INCREMENT per la tabella `laboratori`
 --
 ALTER TABLE `laboratori`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT per la tabella `scelte`
 --
 ALTER TABLE `scelte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT per la tabella `settimane`
