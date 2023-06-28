@@ -30,12 +30,12 @@ class Codici extends Database {
         );
     }
 
-    function addCodice($iscritto, $id_settimana) {
+    function addCodice($iscritto, $settimana) {
         $this->insert(
-            "INSERT INTO " . self::$table_name . " (iscritto, id_settimana) VALUES (:iscritto, :id_settimana)",
+            "INSERT INTO " . self::$table_name . " (iscritto, id_settimana) VALUES (:iscritto, :settimana)",
             array(
                 array(':iscritto', $iscritto, PDO::PARAM_INT),
-                array(':id_settimana', $id_settimana, PDO::PARAM_STR)
+                array(':settimana', $settimana, PDO::PARAM_STR)
             )
         );
         return $this->fromIscritto($iscritto);

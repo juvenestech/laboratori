@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $codici = new Codici();
 
-    if(isset($_POST['iscritto']) && isset($_POST['id_settimana'])) {
-        $ret = $codici->addCodice($_POST['iscritto'], $_POST['id_settimana']);
+    if(isset($_POST['iscritto']) && isset($_POST['settimana'])) {
+        $ret = $codici->addCodice($_POST['iscritto'], $_POST['settimana']);
     } else {
         http_response_code(400);
     }
