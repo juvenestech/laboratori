@@ -19,11 +19,15 @@ class Scelte extends Database {
         );
     }
 
-    function fromAttivita($id_attivita) {
+    function fromLaboratorio($laboratorio, $settimana) {
         return $this->select(
-            "SELECT * FROM " .self::$table_name . " WHERE id_attivita = :id_attivita",
+            "SELECT `scelte`.* from `scelte`
+                INNER JOIN `codici` ON `scelte`.`codice` = `codici`.`codice`
+            WHERE `scelte`.`id_laboratorio` = :laboratorio
+                AND `codici`.`id_settimana` = :settimana",
             array(
-                array(':id_attivita', $id_attivita, PDO::PARAM_INT)
+                array(':id_attivita', $id_attivita, PDO::PARAM_INT),
+                array(':settimana', $settimana, PDO::PARAM_INT)
             )
         );
     }

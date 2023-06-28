@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (isset($_GET['id']))
         $ret = $scelte->fromId($_GET['id']);
-    elseif (isset($_GET['attivita']))
-        $ret = $scelte->fromAttivita($_GET['attivita']);
+    elseif (isset($_GET['laboratorio']) && isset($_GET['settimana']))
+        $ret = $scelte->fromLaboratorio($_GET['laboratorio'],$_GET['settimana']);
     else
         $ret = $scelte->getAll();
 

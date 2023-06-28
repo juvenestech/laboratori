@@ -34,10 +34,6 @@ Restituisce la lista di tutti i laboratori
 Restituisce il laboratorio con il dato `id`
 - 200: Success
 - 400: No result
-### `[GET] ?settimana=<settimana>`
-Restituisce i laboratori in una data `settimana`
-- 200: Success
-- 400: No result
 ### `[GET] ?codice=<codice>`
 Restituisce i laboratori visibili per un dato `codice`
 - 200: Success
@@ -57,8 +53,8 @@ Restituisce la scelta con il dato `id`<br/>
 - 200: Success
 - 400: No result
 - 401: Unauthorized
-### `[GET] ?attivita=<attivita>`
-Restituisce le scelte di una data `attivita`<br/>
+### `[GET] ?laboratorio=<laboratorio>&settimana=<settimana>`
+Restituisce le scelte di un dato `laboratorio` in una determinata `settimana`<br/>
 **⚠ AUTH REQUIRED**
 - 200: Success
 - 400: No result

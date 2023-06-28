@@ -1,15 +1,13 @@
 <?php
 
-class Database
-{
+class Database {
     private $host;
     private $db_name;
     private $username;
     private $password;
     public $conn;
 
-    function __construct()
-    {
+    function __construct() {
         include "config.php";
         $this->host = $_DB_HOST;
         $this->db_name = $_DB_NAME;
@@ -18,13 +16,11 @@ class Database
         $this->connect();
     }
 
-    public function disconnect()
-    {
+    public function disconnect() {
         $this->conn = null;
     }
 
-    public function connect()
-    {
+    public function connect() {
         $this->disconnect();
 
         try {
@@ -44,8 +40,7 @@ class Database
     }
     
 
-    public function select($query = "", $params = [])
-    {
+    public function select($query = "", $params = []) {
         try {
             $stmt = $this->executeStatement($query, $params);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -57,8 +52,7 @@ class Database
         return false;
     }
 
-    private function executeStatement($query = "", $params = [])
-    {
+    private function executeStatement($query = "", $params = []) {
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt === false)
@@ -75,8 +69,7 @@ class Database
         }
     }
 
-    public function insert($query = "", $params = [])
-    {
+    public function insert($query = "", $params = []) {
         try {
             $stmt = $this->executeStatement($query, $params);
             $id = $this->conn->lastInsertId();

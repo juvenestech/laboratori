@@ -1,6 +1,8 @@
 const params = new URLSearchParams(window.location.search)
 const codice = params.get('codice')
 
+var selezionate = 0;
+
 $('.laboratorio').click(function () {
     if($(this).is('.choosen')) {
         return;
@@ -12,6 +14,8 @@ $('.laboratorio').click(function () {
         $(this).addClass('selected');
     }
     check.prop('checked', !check.prop('checked'));
+    selezionate = $('.laboratorio input[type="checkbox" checked]').length;
+    console.log(selezionate)
 })
 $.get("api/scelte?codice=" + codice, (scelte) =>{
     scelte.forEach(scelta => {

@@ -1,123 +1,11 @@
 {
 	"info": {
-		"_postman_id": "087a7ad9-ded8-48dc-a1d8-b64f9382ea2a",
+		"_postman_id": "4f4ec0c1-23a3-4b44-b6c3-6c4d0c903a83",
 		"name": "LABORATORI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17087275"
 	},
 	"item": [
-		{
-			"name": "ATTIVITA",
-			"item": [
-				{
-					"name": "getAll",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "nome",
-									"value": "nome1",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "localhost/api/attivita",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"api",
-								"attivita"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "fromId",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost/api/attivita?id=1",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"api",
-								"attivita"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "fromGiorno",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost/api/attivita?giorno=1&settimana=1",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"api",
-								"attivita"
-							],
-							"query": [
-								{
-									"key": "giorno",
-									"value": "1"
-								},
-								{
-									"key": "settimana",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "fromLaboratorio",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost/api/attivita?id_laboratorio=1",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"api",
-								"attivita"
-							],
-							"query": [
-								{
-									"key": "id_laboratorio",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
 		{
 			"name": "CODICI",
 			"item": [
@@ -127,9 +15,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/codici",
+							"raw": "{{url}}/api/codici",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -145,9 +33,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/codici?codice=d1923ca5-e3a0-11ec-9ba7-40167e880aaf",
+							"raw": "{{url}}/api/codici?codice=d1923ca5-e3a0-11ec-9ba7-40167e880aaf",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -164,6 +52,30 @@
 					"response": []
 				},
 				{
+					"name": "fromIscritto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/codici?iscritto=618",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"codici"
+							],
+							"query": [
+								{
+									"key": "iscritto",
+									"value": "618"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "addCodice",
 					"request": {
 						"method": "POST",
@@ -173,20 +85,20 @@
 							"formdata": [
 								{
 									"key": "iscritto",
-									"value": "3",
+									"value": "6",
 									"type": "text"
 								},
 								{
-									"key": "id_settimana",
+									"key": "settimana",
 									"value": "2",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost/api/codici",
+							"raw": "{{url}}/api/codici",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -207,9 +119,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/laboratori",
+							"raw": "{{url}}/api/laboratori",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -225,9 +137,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/laboratori?id=1",
+							"raw": "{{url}}/api/laboratori?id=1",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -249,9 +161,27 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/laboratori?id_settimana=1",
+							"raw": "{{url}}/api/laboratori",
 							"host": [
-								"localhost"
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"laboratori"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fromCodice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/laboratori?codice=d1923ca5-e3a0-11ec-9ba7-40167e880aaf",
+							"host": [
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -259,8 +189,8 @@
 							],
 							"query": [
 								{
-									"key": "id_settimana",
-									"value": "1"
+									"key": "codice",
+									"value": "d1923ca5-e3a0-11ec-9ba7-40167e880aaf"
 								}
 							]
 						}
@@ -278,9 +208,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/scelte",
+							"raw": "{{url}}/api/scelte",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -296,9 +226,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/scelte?id=1",
+							"raw": "{{url}}/api/scelte?id=1",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -320,9 +250,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost/api/scelte?codice=93b1e307-e39f-11ec-9ba7-40167e880aaf",
+							"raw": "{{url}}/api/scelte?codice=93b1e307-e39f-11ec-9ba7-40167e880aaf",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -339,6 +269,34 @@
 					"response": []
 				},
 				{
+					"name": "fromLaboratorio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/scelte?laboratorio=1&settimana=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"scelte"
+							],
+							"query": [
+								{
+									"key": "laboratorio",
+									"value": "1"
+								},
+								{
+									"key": "settimana",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "addScelta",
 					"request": {
 						"method": "POST",
@@ -348,25 +306,20 @@
 							"formdata": [
 								{
 									"key": "codice",
-									"value": "",
+									"value": "00000000-0000-0000-0000-222222222222",
 									"type": "text"
 								},
 								{
-									"key": "codice",
-									"value": "93b1e307-e39f-11ec-9ba7-40167e880aaf",
-									"type": "text"
-								},
-								{
-									"key": "id_laboratorio",
-									"value": "1",
+									"key": "laboratorio",
+									"value": "13",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost/api/scelte",
+							"raw": "{{url}}/api/scelte",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -388,15 +341,15 @@
 					"formdata": [
 						{
 							"key": "password",
-							"value": "admin",
+							"value": "tkG8xi2@659a",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost/hasher",
+					"raw": "{{url}}/hasher",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"hasher"
@@ -420,15 +373,15 @@
 						},
 						{
 							"key": "password",
-							"value": "admin",
+							"value": "tkG8xi2@659a",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost/login",
+					"raw": "{{url}}/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"login"
