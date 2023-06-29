@@ -124,7 +124,7 @@ DECLARE numero INTEGER;
 SELECT COUNT(*) INTO numero FROM scelte
 WHERE scelte.codice = NEW.codice;
 
-IF numero >= 4 THEN
+IF numero >= 5 THEN
    SIGNAL SQLSTATE '45000' SET message_text = 'Sono già state espresse le preferenze per questo codice';
 END IF;
 END

@@ -135,7 +135,7 @@ if (isset($_GET['done'])) {
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js?t=1688048905"></script>
 
     <?php
     if ($STATO != 'OK') echo '<script>$("#conferma").click(() => inviaCodice())</script>';

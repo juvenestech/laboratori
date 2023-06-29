@@ -2,7 +2,7 @@ const params = new URLSearchParams(window.location.search)
 const codice = params.get('codice')
 
 var selezionate = 0;
-const SELEZIONABILI = 4;
+const SELEZIONABILI = 5;
 
 var modalErrore = new bootstrap.Modal(document.getElementById('modalErrore'), {})
 
