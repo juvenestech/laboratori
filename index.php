@@ -54,7 +54,7 @@ if (isset($_GET['done'])) {
                     <p class="text-center" style="font-family: Montserrat, sans-serif;">
                         <?php
                         if ($STATO == 'DONE') echo 'Grazie per aver inviato le tue preferenze!';
-                        elseif ($STATO == 'OK') echo 'Scegli i 4 laboratori che più ti piacciono!';
+                        elseif ($STATO == 'OK') echo 'Scegli i 5 laboratori che più ti piacciono!';
                         elseif ($STATO == 'NOCODICE') echo 'Inserisci il tuo codice';
                         elseif ($STATO == 'EXPIRED') echo 'Il codice inserito è scaduto<br>Immetti un codice valido';
                         else echo 'Il codice inserito non è valido<br>Immetti il tuo codice';
