@@ -31,13 +31,21 @@ class Codici extends Database {
     }
 
     function addCodice($iscritto, $settimana) {
-        $this->insert(
-            "INSERT INTO " . self::$table_name . " (iscritto, id_settimana) VALUES (:iscritto, :settimana)",
-            array(
-                array(':iscritto', $iscritto, PDO::PARAM_INT),
-                array(':settimana', $settimana, PDO::PARAM_STR)
-            )
-        );
-        return $this->fromIscritto($iscritto);
+        $codice = $this->fromIscritto($iscritto);
+        if(!$codice){
+            try {
+                $this->insert(
+                    "INSERT INTO " . self::$table_name . " (iscritto, id_settimana) VALUES (:iscritto, :settimana)",
+                    array(
+                        array(':iscritto', $iscritto, PDO::PARAM_INT),
+                        array(':settimana', $settimana, PDO::PARAM_STR)
+                    )
+                );
+            } catch (Exception $e) {
+                return;
+            }
+            $codice = $this->fromIscritto($iscritto);
+        }
+        return $codice;
     }
 }

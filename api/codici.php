@@ -47,12 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if(isset($_POST['iscritto']) && isset($_POST['settimana'])) {
         $ret = $codici->addCodice($_POST['iscritto'], $_POST['settimana']);
-    } else {
-        http_response_code(400);
     }
 
+    if(!$ret) {
+        http_response_code(400);
+        echo "KO";
+    }
     echo json_encode($ret);
-    if(!$ret) http_response_code(400);
 } else
     http_response_code(404);
 
