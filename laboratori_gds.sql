@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 28, 2023 alle 23:57
+-- Creato il: Giu 29, 2023 alle 08:23
 -- Versione del server: 10.4.27-MariaDB
 -- Versione PHP: 8.2.0
 
@@ -50,11 +50,23 @@ DELIMITER ;
 --
 
 CREATE TABLE `codici` (
-  `codice` varchar(48) NOT NULL DEFAULT uuid(),
+  `codice` varchar(48) NOT NULL,
   `iscritto` int(11) NOT NULL,
   `id_settimana` int(11) NOT NULL,
   `expired` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Trigger `codici`
+--
+DELIMITER $$
+CREATE TRIGGER `uuid_codici` BEFORE INSERT ON `codici` FOR EACH ROW BEGIN
+  IF new.codice IS NULL THEN
+    SET new.codice = uuid();
+  END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -203,13 +215,13 @@ ALTER TABLE `settimane`
 -- AUTO_INCREMENT per la tabella `laboratori`
 --
 ALTER TABLE `laboratori`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT per la tabella `scelte`
 --
 ALTER TABLE `scelte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT per la tabella `settimane`
