@@ -87,20 +87,19 @@ CREATE TABLE `laboratori` (
 --
 
 INSERT INTO `laboratori` (`id`, `nome`, `descrizione`, `gif`, `posti`) VALUES
-(1, 'Pasta sale', 'Sale, farina e acqua… sono ingredienti che non mancano mai in una dispensa! La pasta sale è un’alternativa naturale alla plastilina, che ti permette di divertirti modellando e decorando le proprie creazioni. ', 'assets/img/gif/pasta sale.gif', 40),
+(1, 'Pasta sale', 'Sale, farina e acqua… sono ingredienti che non mancano mai in una dispensa! La pasta sale è un\'alternativa naturale alla plastilina, che ti permette di divertirti modellando e decorando le proprie creazioni. ', 'assets/img/gif/pasta sale.gif', 40),
 (2, 'Braccialetti', 'Fili, elastici, perline e tanta voglia di fare sono gli unici ingredienti necessari per creare un bellissimo braccialetto. Potrai realizzare un gioiello per te stesso oppure portare un regalo fai da te ad amici e parenti. ', 'assets/img/gif/braccialetti.gif', 40),
 (3, 'Pirografia', 'Prova anche tu una tecnica che, per mezzo di una fonte di calore, permette di incidere su una superficie di legno. Lasciati alle spalle i banali fogli di carta e iniziate a disegnare sul legno, così da essere più originali che mai. ', 'assets/img/gif/pirografia.gif', 40),
 (4, 'Magliette tie dye', 'Sei stufi delle banali magliette bianche? In questo laboratorio potrai creare la tua maglietta come più ti piace, con colori sgargianti e fantasie alla moda.', 'assets/img/gif/magliette tie-dye.gif', 40),
 (5, 'Rompicapi', 'Tra tanti laboratori creativi ci vuole uno per mettere in gioco la propria intelligenza, cercando di risolvere rompicapi, dai più semplici ai più complessi.', 'assets/img/gif/rompicapi.gif', 40),
 (6, 'Apicoltura', 'Se sei amante degli animali, in particolare degli insetti, devi sapere che al quinto piano del Rainerum ci sono decine di alveari! In questo laboratorio potrai entrare in contatto direttamente con le api e scoprire di più del loro fantastico mondo. ', 'assets/img/gif/apicoltura.gif', 40),
-(7, 'Stecchini', 'Dopo aver mangiato un ghiacciolo siamo abituati a buttare lo stecchino, ma se ti dicessi che c’è un modo per utilizzarli in modo creativo? In questo laboratorio potrai creare moltissime costruzioni con gli stecchini!', 'assets/img/gif/stecchini.gif', 40),
+(7, 'Stecchini', 'Dopo aver mangiato un ghiacciolo siamo abituati a buttare lo stecchino, ma se ti dicessi che c\'è un modo per utilizzarli in modo creativo? In questo laboratorio potrai creare moltissime costruzioni con gli stecchini!', 'assets/img/gif/stecchini.gif', 40),
 (8, 'Oculus', 'Indossando l\'apposito oculare, potrai giocare e immergerti in un\'esperienza in realtà virtuale.', 'assets/img/gif/oculus.gif', 20),
 (9, 'Giocoleria', 'Avete presenti i giocolieri che si esibiscono nei circhi? In questo laboratorio si può imparare ad esibirsi come loro, usando il piattino, il diablo e molto altro. ', 'assets/img/gif/giocoleria.gif', 40),
-(10, 'Antistress', 'Creare antistress è un’attività molto utile, in vista dello stress che la vita può procurare. Inserendo riso oppure farina all’interno di un palloncino si può creare un oggetto morbido, da schiacciare nei momenti di stress. ', 'assets/img/gif/pirografia.gif', 40),
+(10, 'Antistress', 'Creare antistress è un\'attività molto utile, in vista dello stress che la vita può procurare. Inserendo riso oppure farina all\'interno di un palloncino si può creare un oggetto morbido, da schiacciare nei momenti di stress. ', 'assets/img/gif/antistress.gif', 40),
 (11, 'Perline', 'Con delle perline di plastica si possono creare figure colorate e buffe. Successivamente, passandoci sopra il ferro da stiro, le creazioni si solidificano e si possono usare come decorazioni casalinghe.', 'assets/img/gif/perline.gif', 40),
 (12, 'Acchiappasogni', 'Gli acchiappasogni sono creazioni associate alle tribù indigene del nord, con fili, piume e perline potrete creare il vostro e fare sogni tranquilli ogni notte!', 'assets/img/gif/acchiappasogni.gif', 40),
 (13, 'Filografia', 'Scopri uno splendido modo di decorare una lastra di legno: si crea un disegno piantando alcuni chiodi e si fa passare il filo intorno ad essi. Al termine del lavoro otterrete un disegno colorato e originale.', 'assets/img/gif/filografia.gif', 40);
-
 -- --------------------------------------------------------
 
 --
