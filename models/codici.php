@@ -10,7 +10,7 @@ class Codici extends Database {
         return $this->select("SELECT * FROM " . self::$table_name);
     }
 
-    function fromIscritto($iscritto, $settimanas) {
+    function fromIscritto($iscritto, $settimana) {
         return $this->select(
             "SELECT codice AS `codice`, iscritto, id_settimana, expired FROM " . self::$table_name . 
             " WHERE iscritto = :iscritto AND id_settimana = :settimana", 
