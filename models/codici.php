@@ -10,12 +10,13 @@ class Codici extends Database {
         return $this->select("SELECT * FROM " . self::$table_name);
     }
 
-    function fromIscritto($iscritto) {
+    function fromIscritto($iscritto, $settimanas) {
         return $this->select(
             "SELECT codice AS `codice`, iscritto, id_settimana, expired FROM " . self::$table_name . 
-            " WHERE iscritto = :iscritto", 
+            " WHERE iscritto = :iscritto AND id_settimana = :settimana", 
             array(
-                array(':iscritto', $iscritto, PDO::PARAM_INT)
+                array(':iscritto', $iscritto, PDO::PARAM_INT),
+                array(':settimana', $settimana, PDO::PARAM_INT)
             )
         );
     }
@@ -31,7 +32,7 @@ class Codici extends Database {
     }
 
     function addCodice($iscritto, $settimana) {
-        $codice = $this->fromIscritto($iscritto);
+        $codice = $this->fromIscritto($iscritto, $settimana);
         if(!$codice){
             try {
                 $this->insert(
@@ -44,7 +45,7 @@ class Codici extends Database {
             } catch (Exception $e) {
                 return;
             }
-            $codice = $this->fromIscritto($iscritto);
+            $codice = $this->fromIscritto($iscritto, $settimana);
         }
         return $codice;
     }
