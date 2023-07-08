@@ -45,7 +45,7 @@ if (isset($_GET['done'])) {
 }
 ?>
 
-<body style="background: url(&quot;assets/img/Juvenes-immagine-ingresso-per-sito-1.jpg&quot;) center fixed;">
+<body style="background: url(&quot;assets/img/Juvenes-immagine-ingresso-per-sito-1.jpg&quot;) center fixed no-repeat;background-size: cover;">
     <section class="projects-horizontal" style="background-color: #00000000">
         <div class="container" style="padding-bottom: 200px;">
             <form onsubmit="return false">
