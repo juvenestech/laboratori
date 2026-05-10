@@ -4,15 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Scegli i tuoi laboratori preferiti per le attività estive Juvenes">
     <title>Scelta laboratori</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/Footer-Dark.css">
-    <link rel="stylesheet" href="assets/css/Header-Dark.css">
-    <link rel="stylesheet" href="assets/css/Projects-Horizontal.css">
-    <link rel="stylesheet" href="assets/css/Responsive-Youtube-Embed.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/frontend.css">
 </head>
 
 <?php
@@ -50,45 +47,56 @@ if (isset($_GET['done'])) {
         <div class="container" style="padding-bottom: 200px;">
             <form onsubmit="return false">
                 <div class="intro">
-                    <h2 class="text-center" style="font-family: Montserrat, sans-serif;font-weight: bold;text-shadow: 5px 5px rgb(0,0,0);">SCELTA LABORATORI</h2>
-                    <p class="text-center" style="font-family: Montserrat, sans-serif;">
+                    <h1 class="text-center page-title">SCELTA LABORATORI</h1>
+                    <p class="text-center page-subtitle">
                         <?php
                         if ($STATO == 'DONE') echo 'Grazie per aver inviato le tue preferenze!';
-                        elseif ($STATO == 'OK') echo 'Scegli i 5 laboratori che più ti piacciono!';
+                        elseif ($STATO == 'OK') echo 'Scegli i laboratori che più ti piacciono!';
                         elseif ($STATO == 'NOCODICE') echo 'Inserisci il tuo codice';
                         elseif ($STATO == 'EXPIRED') echo 'Il codice inserito è scaduto<br>Immetti un codice valido';
                         else echo 'Il codice inserito non è valido<br>Immetti il tuo codice';
                         ?>
                     </p>
                 </div>
+
+                <?php if ($STATO == 'OK'): ?>
+                <!-- Counter real-time (§5) -->
+                <div class="selection-counter" id="selectionCounter">
+                    <span id="counterText">Hai selezionato <strong>0</strong> laboratori</span>
+                </div>
+                <?php endif; ?>
+
                 <div class="row projects">
                     <?php
                 if ($STATO == 'OK')
                         foreach ($lista as $lab)
                             echo '<div class="col-sm-6 d-flex mx-auto item">
-                                <div class="row laboratorio" lab="' . $lab['id'] . '">
-                                    <input type="checkbox" style="display:none"></input>
-                                    <div class="col-md-12 col-lg-5 d-flex align-items-center"><img class="img-fluid" src="' . $lab['gif'] . '"></div>
-                                    <div class="col">
-                                        <h3 class="name" style="font-family: Montserrat, sans-serif;">' . $lab['nome'] . '</h3>
-                                        <p class="description" style="font-family: Montserrat, sans-serif;">' . $lab['descrizione'] . '</p>
+                                <label class="row laboratorio" data-lab-id="' . htmlspecialchars($lab['id'], ENT_QUOTES, 'UTF-8') . '" data-posti="' . htmlspecialchars($lab['posti'], ENT_QUOTES, 'UTF-8') . '" data-prenotazioni="' . htmlspecialchars($lab['prenotazioni'], ENT_QUOTES, 'UTF-8') . '" data-max-scelte="' . htmlspecialchars($lab['max_scelte'] ?? 5, ENT_QUOTES, 'UTF-8') . '" data-categoria="' . htmlspecialchars($lab['categoria_nome'] ?? '', ENT_QUOTES, 'UTF-8') . '">
+                                    <input type="checkbox" class="lab-checkbox visually-hidden" aria-label="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '">
+                                    <div class="lab-badge" aria-hidden="true"></div>
+                                    <div class="col-12 col-lg-5 d-flex align-items-center lab-image-wrap"><img class="img-fluid" src="' . htmlspecialchars($lab['gif'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '" loading="lazy"></div>
+                                    <div class="col lab-info">
+                                        <h3 class="name">' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '</h3>
+                                        <p class="description">' . htmlspecialchars($lab['descrizione'], ENT_QUOTES, 'UTF-8') . '</p>
                                     </div>
-                                </div>
+                                </label>
                             </div>';
                     elseif ($STATO != 'DONE')
                         echo '<input type="text"
                             id="codice"
-                            class="form-control"
+                            class="form-control codice-input"
                             pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"
-                            title="Codice personale">
+                            title="Codice personale"
+                            placeholder="Inserisci il tuo codice..."
+                            autocomplete="off">
                         </input>';
                     ?>
                 </div>
                 <?php
                 if ($STATO != 'DONE') {
-                    echo '<div class="row text-center">
-                        <div class="col" style="margin: 10px;">
-                            <button id="conferma" class="btn btn-dark border-dark" type="button">CONFERMA</button>
+                    echo '<div class="bottom-bar">
+                        <div class="container text-center">
+                            <button id="conferma" class="btn btn-conferma" type="button">CONFERMA</button>
                         </div>
                     </div>';
                 } else {
@@ -97,25 +105,25 @@ if (isset($_GET['done'])) {
                     include_once $path;
 
                     $scelte = new Scelte();
-                    $lista = $scelte->fromCodice($_GET['done']);
+                    $done_codice = htmlspecialchars($_GET['done'], ENT_QUOTES, 'UTF-8');
+                    $lista = $scelte->fromCodice($done_codice);
 
                     $path = $_SERVER['DOCUMENT_ROOT'];
                     $path .= "/models/laboratori.php";
                     include_once $path;
 
                     $laboratori = new Laboratori();
-                    echo 'Ecco le tue scelte:<ul>';
+                    echo '<div class="done-recap"><h3>Ecco le tue scelte:</h3><ol class="done-list">';
                     foreach ($lista as $scelta) 
-                        echo '<li>' . $laboratori->fromId($scelta['id_laboratorio'])[0]['nome'] . '</li>';
-                    echo '</ul>';
-                    echo '<small>Per qualsiasi dubbio, scrivi a <a href="mailto:iscrizioni+laboratori@juvenes.it">iscrizioni+laboratori@juvenes.it</a> o contatta un educatore.</small>';
+                        echo '<li>' . htmlspecialchars($laboratori->fromId($scelta['id_laboratorio'])[0]['nome'], ENT_QUOTES, 'UTF-8') . '</li>';
+                    echo '</ol>';
+                    echo '<small>Per qualsiasi dubbio, scrivi a <a href="mailto:iscrizioni+laboratori@juvenes.it">iscrizioni+laboratori@juvenes.it</a> o contatta un educatore.</small></div>';
                 }
                 ?>
             </form>
         </div>
     </section>
 
-        
     <div class="modal fade" id="modalErrore" tabindex="-1" aria-labelledby="modalErrore" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -135,7 +143,7 @@ if (isset($_GET['done'])) {
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/script.js?t=1688048905"></script>
+    <script src="assets/js/script.js?v=2"></script>
 
     <?php
     if ($STATO != 'OK') echo '<script>$("#conferma").click(() => inviaCodice())</script>';

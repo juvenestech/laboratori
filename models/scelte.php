@@ -26,7 +26,7 @@ class Scelte extends Database {
             WHERE `scelte`.`id_laboratorio` = :laboratorio
                 AND `codici`.`id_settimana` = :settimana",
             array(
-                array(':id_attivita', $id_attivita, PDO::PARAM_INT),
+                array(':laboratorio', $laboratorio, PDO::PARAM_INT),
                 array(':settimana', $settimana, PDO::PARAM_INT)
             )
         );
@@ -34,25 +34,47 @@ class Scelte extends Database {
 
     function fromCodice($codice) {
         return $this->select(
-            "SELECT * FROM " .self::$table_name . " WHERE codice = :codice",
+            "SELECT * FROM " .self::$table_name . " WHERE codice = :codice ORDER BY ordine ASC",
             array(
                 array(':codice', $codice, PDO::PARAM_STR)
             )
         );
     }
 
-    function addScelta($codice, $laboratorio){
+    function addScelta($codice, $laboratorio, $ordine = null){
         try {
             $this->insert(
-                "INSERT INTO " . self::$table_name . " (codice, id_laboratorio) VALUES (:codice, :laboratorio)",
+                "INSERT INTO " . self::$table_name . " (codice, id_laboratorio, ordine) VALUES (:codice, :laboratorio, :ordine)",
                 array(
                     array(':codice', $codice, PDO::PARAM_STR),
-                    array(':laboratorio', $laboratorio, PDO::PARAM_INT)
+                    array(':laboratorio', $laboratorio, PDO::PARAM_INT),
+                    array(':ordine', $ordine, PDO::PARAM_INT)
                 )
             );
         } catch (PDOException $e) {
-            return $e->getMessage();
+            error_log("addScelta error: " . $e->getMessage());
+            throw new Exception("Errore nel salvataggio della scelta.", (int)$e->getCode());
         }
         return $this->fromCodice($codice);
+    }
+
+    /**
+     * Restituisce le scelte aggregate per la reportistica CSV.
+     * Incrocia codici.iscritto con i laboratori scelti.
+     */
+    function getReport($settimana) {
+        return $this->select(
+            "SELECT `codici`.`iscritto`, `codici`.`codice`, 
+                    `laboratori`.`nome` AS laboratorio_nome,
+                    `scelte`.`ordine`, `scelte`.`timestamp`
+            FROM `scelte`
+                INNER JOIN `codici` ON `scelte`.`codice` = `codici`.`codice`
+                INNER JOIN `laboratori` ON `scelte`.`id_laboratorio` = `laboratori`.`id`
+            WHERE `codici`.`id_settimana` = :settimana
+            ORDER BY `codici`.`iscritto`, `scelte`.`ordine`",
+            array(
+                array(':settimana', $settimana, PDO::PARAM_INT)
+            )
+        );
     }
 }

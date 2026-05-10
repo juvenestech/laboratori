@@ -33,7 +33,8 @@ class Database {
             $this->conn->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
             $this->conn->exec("set names utf8");
         } catch (PDOException $exception) {
-            print  "Connection error: " . $exception->getMessage();
+            error_log("Database connection error: " . $exception->getMessage());
+            throw new Exception("Errore di connessione al database.");
         }
 
         return $this->conn;
@@ -59,7 +60,7 @@ class Database {
                 throw new Exception("Unable to do prepared statement: " . $query);
 
             foreach ($params as $param)
-                $stmt->bindParam($param[0], $param[1], $param[2]);
+                $stmt->bindValue($param[0], $param[1], $param[2]);
 
             $stmt->execute();
 

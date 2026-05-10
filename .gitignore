@@ -1,0 +1,14 @@
+# Dipendenze
+node_modules/
+
+# File sensibili
+private/config.php
+private/users.php
+*.postman_collection.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store

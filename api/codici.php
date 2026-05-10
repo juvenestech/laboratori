@@ -1,10 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://laboratori.juvenes.it");
 header("Content-Type: application/json; charset=UTF-8");
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 $path = $_SERVER['DOCUMENT_ROOT'];
 $path .= "/models/codici.php";
@@ -21,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         include_once $path;
         if(!$AUTH) {
             http_response_code(401);
-            echo "KO";
+            echo json_encode(["error" => "Non autorizzato"]);
             return;
         }
 
@@ -39,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include_once $path;
     if(!$AUTH) {
         http_response_code(401);
-        echo "KO";
+        echo json_encode(["error" => "Non autorizzato"]);
         return;
     }
 
@@ -51,9 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if(!$ret) {
         http_response_code(400);
-        echo "KO";
+        echo json_encode(["error" => "Errore nella creazione del codice"]);
     }
     echo json_encode($ret);
 } else
     http_response_code(404);
-

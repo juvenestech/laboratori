@@ -11,8 +11,9 @@ if (
     $path .= "/private/users.php";
     include_once $path;
 
-    if (array_key_exists($username, $users) && $users[$username] == hash("sha512", $password)) {
+    if (array_key_exists($username, $users) && password_verify($password, $users[$username])) {
         session_start();
+        session_regenerate_id(true);
         $_SESSION["username"] = $username;       
         echo "OK";
     } else {
@@ -21,4 +22,3 @@ if (
     }
 } else 
     http_response_code(404);
-
