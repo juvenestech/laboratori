@@ -36,6 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $scelte = new Scelte();
 
+    // Supporto tunneling DELETE via POST con _method=DELETE
+    if (isset($_POST['_method']) && strtoupper($_POST['_method']) === 'DELETE') {
+        handleDelete($scelte, $_POST);
+        return;
+    }
+
     if(isset($_POST['codice']) && isset($_POST['laboratorio'])) {
         // V9: Verifica che il codice non sia scaduto prima di inserire
         $path = $_SERVER['DOCUMENT_ROOT'];
@@ -70,5 +76,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         http_response_code(400);
         echo json_encode(["error" => "Parametri mancanti"]);
     }
+} elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    $scelte = new Scelte();
+    // Tenta parsing JSON body, poi form-urlencoded
+    $raw = file_get_contents('php://input');
+    $params = json_decode($raw, true);
+    if (!is_array($params) || empty($params)) {
+        parse_str($raw, $params);
+    }
+    handleDelete($scelte, $params);
 } else
     http_response_code(404);
+
+/**
+ * Gestisce DELETE di una scelta. Valida il codice prima di eliminare.
+ * Non richiede auth: la conoscenza del codice è già la credenziale.
+ */
+function handleDelete($scelte, $params) {
+    $codice = $params['codice'] ?? null;
+    $laboratorio = $params['laboratorio'] ?? null;
+
+    if (!$codice || !$laboratorio) {
+        http_response_code(400);
+        echo json_encode(["error" => "Parametri mancanti (codice, laboratorio)"]);
+        return;
+    }
+
+    // Verifica che il codice esista e non sia scaduto
+    $path = $_SERVER['DOCUMENT_ROOT'];
+    $path .= "/models/codici.php";
+    include_once $path;
+
+    $codici = new Codici();
+    $codice_data = $codici->fromCodice($codice);
+
+    if (!$codice_data || empty($codice_data)) {
+        http_response_code(400);
+        echo json_encode(["error" => "Codice non valido"]);
+        return;
+    }
+
+    if ($codice_data[0]['expired']) {
+        http_response_code(403);
+        echo json_encode(["error" => "Il codice è scaduto"]);
+        return;
+    }
+
+    try {
+        $ok = $scelte->deleteScelta($codice, (int)$laboratorio);
+        echo json_encode([
+            "deleted" => $ok,
+            "scelte" => $scelte->fromCodice($codice)
+        ]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(["error" => $e->getMessage()]);
+    }
+}

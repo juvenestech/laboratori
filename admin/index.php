@@ -79,6 +79,9 @@ if(!$AUTH) {
             <li class="nav-item" data-section="laboratori">
                 <span class="nav-icon">🎨</span> Laboratori
             </li>
+            <li class="nav-item" data-section="settimane">
+                <span class="nav-icon">🗓️</span> Settimane
+            </li>
             <li class="nav-item" data-section="codici">
                 <span class="nav-icon">🔑</span> Codici
             </li>
@@ -162,6 +165,20 @@ if(!$AUTH) {
             <div class="table-responsive">
                 <table class="table table-hover" id="tblLaboratori">
                     <thead><tr><th>ID</th><th>Nome</th><th>Categoria</th><th>Posti</th><th>Prenotazioni</th><th>Azioni</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SETTIMANE -->
+        <section id="sec-settimane" class="admin-section">
+            <div class="section-header">
+                <h1>Settimane</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSettimana">+ Nuova Settimana</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover" id="tblSettimane">
+                    <thead><tr><th>ID</th><th>Nome</th><th>Edizione</th><th>Azioni</th></tr></thead>
                     <tbody></tbody>
                 </table>
             </div>
@@ -318,13 +335,31 @@ if(!$AUTH) {
         <div class="modal-footer"><button class="btn btn-primary" id="btnSaveCategoria">Salva</button></div>
     </div></div></div>
 
+    <div class="modal fade" id="modalSettimana" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">Settimana</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+            <input type="hidden" id="setId">
+            <div class="mb-3"><label class="form-label">Nome</label><input type="text" class="form-control" id="setNome" placeholder="Es: Prima settimana"></div>
+            <div class="mb-3"><label class="form-label">Edizione</label><select class="form-select" id="setEdizione"></select></div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-primary" id="btnSaveSettimana">Salva</button></div>
+    </div></div></div>
+
     <div class="modal fade" id="modalLaboratorio" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
         <div class="modal-header"><h5 class="modal-title">Laboratorio</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
         <div class="modal-body">
             <input type="hidden" id="labId">
             <div class="mb-3"><label class="form-label">Nome</label><input type="text" class="form-control" id="labNome"></div>
             <div class="mb-3"><label class="form-label">Descrizione</label><textarea class="form-control" id="labDesc"></textarea></div>
-            <div class="mb-3"><label class="form-label">Immagine/GIF (URL o upload)</label><input type="text" class="form-control" id="labGif" placeholder="assets/img/gif/nome.gif"></div>
+            <div class="mb-3">
+                <label class="form-label">Immagine/GIF</label>
+                <input type="text" class="form-control" id="labGif" placeholder="assets/img/gif/nome.gif">
+                <input type="file" class="form-control mt-2" id="labGifFile" accept="image/*,.gif">
+                <small class="text-muted">Path manuale oppure carica un file (max 5MB, .gif/.jpg/.png/.webp).</small>
+                <div id="labGifPreview" class="mt-2" style="display:none">
+                    <img id="labGifPreviewImg" src="" alt="Preview" style="max-width:200px;border-radius:8px;border:1px solid #ddd">
+                </div>
+            </div>
             <div class="mb-3"><label class="form-label">Posti</label><input type="number" class="form-control" id="labPosti" value="40"></div>
             <div class="mb-3"><label class="form-label">Categoria</label><select class="form-select" id="labCategoria"></select></div>
         </div>

@@ -59,19 +59,65 @@ if (isset($_GET['done'])) {
                     </p>
                 </div>
 
+                <?php
+                // Raggruppa laboratori per categoria (Fix 4b)
+                $categorie_steps = [];
+                if ($STATO == 'OK') {
+                    foreach ($lista as $lab) {
+                        $cat_id = $lab['id_categoria'] ?? 0;
+                        if (!isset($categorie_steps[$cat_id])) {
+                            $categorie_steps[$cat_id] = [
+                                'id' => $cat_id,
+                                'nome' => $lab['categoria_nome'] ?? 'Laboratori',
+                                'descrizione' => $lab['categoria_descrizione'] ?? '',
+                                'max_scelte' => $lab['max_scelte'] ?? 5,
+                                'laboratori' => []
+                            ];
+                        }
+                        $categorie_steps[$cat_id]['laboratori'][] = $lab;
+                    }
+                    $categorie_steps = array_values($categorie_steps);
+                }
+                $totalSteps = count($categorie_steps);
+                ?>
+
                 <?php if ($STATO == 'OK'): ?>
+                <!-- Step Indicator (Fix 4b) -->
+                <?php if ($totalSteps > 1): ?>
+                <div class="step-indicator" id="stepIndicator">
+                    <?php for ($i = 0; $i < $totalSteps; $i++): ?>
+                        <div class="step-dot<?= $i === 0 ? ' active' : '' ?>" data-step-dot="<?= $i ?>">
+                            <span class="step-num"><?= $i + 1 ?></span>
+                            <span class="step-name"><?= htmlspecialchars($categorie_steps[$i]['nome'], ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <?php if ($i < $totalSteps - 1): ?>
+                            <div class="step-connector"></div>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                </div>
+                <?php endif; ?>
+
                 <!-- Counter real-time (§5) -->
                 <div class="selection-counter" id="selectionCounter">
                     <span id="counterText">Hai selezionato <strong>0</strong> laboratori</span>
                 </div>
                 <?php endif; ?>
 
-                <div class="row projects">
+                <div class="projects-wrapper">
                     <?php
-                if ($STATO == 'OK')
-                        foreach ($lista as $lab)
+                if ($STATO == 'OK') {
+                    foreach ($categorie_steps as $idx => $cat) {
+                        $active_class = $idx === 0 ? ' active' : '';
+                        echo '<div class="categoria-step' . $active_class . '" data-step="' . $idx . '" data-max-scelte="' . htmlspecialchars($cat['max_scelte'], ENT_QUOTES, 'UTF-8') . '" data-categoria-id="' . htmlspecialchars($cat['id'], ENT_QUOTES, 'UTF-8') . '">';
+                        echo '<h2 class="categoria-header">' . htmlspecialchars($cat['nome'], ENT_QUOTES, 'UTF-8') . '</h2>';
+                        if (!empty($cat['descrizione'])) {
+                            echo '<p class="categoria-descrizione">' . htmlspecialchars($cat['descrizione'], ENT_QUOTES, 'UTF-8') . '</p>';
+                        }
+                        echo '<p class="categoria-info">Scegli <strong>' . htmlspecialchars($cat['max_scelte'], ENT_QUOTES, 'UTF-8') . '</strong> laboratori in ordine di preferenza.</p>';
+                        echo '<div class="row projects">';
+                        foreach ($cat['laboratori'] as $lab) {
                             echo '<div class="col-sm-6 d-flex mx-auto item">
-                                <label class="row laboratorio" data-lab-id="' . htmlspecialchars($lab['id'], ENT_QUOTES, 'UTF-8') . '" data-posti="' . htmlspecialchars($lab['posti'], ENT_QUOTES, 'UTF-8') . '" data-prenotazioni="' . htmlspecialchars($lab['prenotazioni'], ENT_QUOTES, 'UTF-8') . '" data-max-scelte="' . htmlspecialchars($lab['max_scelte'] ?? 5, ENT_QUOTES, 'UTF-8') . '" data-categoria="' . htmlspecialchars($lab['categoria_nome'] ?? '', ENT_QUOTES, 'UTF-8') . '">
+                                <label class="row laboratorio" data-lab-id="' . htmlspecialchars($lab['id'], ENT_QUOTES, 'UTF-8') . '" data-posti="' . htmlspecialchars($lab['posti'], ENT_QUOTES, 'UTF-8') . '" data-prenotazioni="' . htmlspecialchars($lab['prenotazioni'], ENT_QUOTES, 'UTF-8') . '" data-max-scelte="' . htmlspecialchars($cat['max_scelte'], ENT_QUOTES, 'UTF-8') . '" data-categoria-id="' . htmlspecialchars($cat['id'], ENT_QUOTES, 'UTF-8') . '" data-categoria="' . htmlspecialchars($cat['nome'], ENT_QUOTES, 'UTF-8') . '">
                                     <input type="checkbox" class="lab-checkbox visually-hidden" aria-label="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '">
                                     <div class="lab-badge" aria-hidden="true"></div>
                                     <div class="col-12 col-lg-5 d-flex align-items-center lab-image-wrap"><img class="img-fluid" src="' . htmlspecialchars($lab['gif'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '" loading="lazy"></div>
@@ -81,24 +127,36 @@ if (isset($_GET['done'])) {
                                     </div>
                                 </label>
                             </div>';
-                    elseif ($STATO != 'DONE')
-                        echo '<input type="text"
-                            id="codice"
-                            class="form-control codice-input"
-                            pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"
-                            title="Codice personale"
-                            placeholder="Inserisci il tuo codice..."
-                            autocomplete="off">
-                        </input>';
+                        }
+                        echo '</div></div>';
+                    }
+                } elseif ($STATO != 'DONE') {
+                    echo '<div class="row projects"><input type="text"
+                        id="codice"
+                        class="form-control codice-input"
+                        pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                        title="Codice personale"
+                        placeholder="Inserisci il tuo codice..."
+                        autocomplete="off"></div>';
+                }
                     ?>
                 </div>
                 <?php
                 if ($STATO != 'DONE') {
-                    echo '<div class="bottom-bar">
-                        <div class="container text-center">
-                            <button id="conferma" class="btn btn-conferma" type="button">CONFERMA</button>
-                        </div>
-                    </div>';
+                    if ($STATO == 'OK') {
+                        echo '<div class="bottom-bar">
+                            <div class="container text-center d-flex justify-content-center align-items-center gap-2">
+                                <button id="indietro" class="btn btn-indietro" type="button" style="display:none">INDIETRO</button>
+                                <button id="conferma" class="btn btn-conferma" type="button">' . ($totalSteps > 1 ? 'AVANTI' : 'CONFERMA') . '</button>
+                            </div>
+                        </div>';
+                    } else {
+                        echo '<div class="bottom-bar">
+                            <div class="container text-center">
+                                <button id="conferma" class="btn btn-conferma" type="button">CONFERMA</button>
+                            </div>
+                        </div>';
+                    }
                 } else {
                     $path = $_SERVER['DOCUMENT_ROOT'];
                     $path .= "/models/scelte.php";
@@ -143,7 +201,7 @@ if (isset($_GET['done'])) {
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/script.js?v=2"></script>
+    <script src="assets/js/script.js?v=3"></script>
 
     <?php
     if ($STATO != 'OK') echo '<script>$("#conferma").click(() => inviaCodice())</script>';

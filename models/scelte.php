@@ -59,6 +59,26 @@ class Scelte extends Database {
     }
 
     /**
+     * Rimuove una scelta per coppia (codice, id_laboratorio).
+     * Restituisce true se almeno una riga è stata eliminata, false altrimenti.
+     */
+    function deleteScelta($codice, $id_laboratorio) {
+        try {
+            $stmt = $this->conn->prepare(
+                "DELETE FROM " . self::$table_name .
+                " WHERE codice = :codice AND id_laboratorio = :laboratorio"
+            );
+            $stmt->bindValue(':codice', $codice, PDO::PARAM_STR);
+            $stmt->bindValue(':laboratorio', $id_laboratorio, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            error_log("deleteScelta error: " . $e->getMessage());
+            throw new Exception("Errore nella rimozione della scelta.", (int)$e->getCode());
+        }
+    }
+
+    /**
      * Restituisce le scelte aggregate per la reportistica CSV.
      * Incrocia codici.iscritto con i laboratori scelti.
      */

@@ -82,7 +82,7 @@ class Laboratori extends Database {
             return [];
         }
         return $this->select(
-            "SELECT DISTINCT `laboratori`.*, `categorie`.`nome` AS categoria_nome, `categorie`.`max_scelte`,
+            "SELECT DISTINCT `laboratori`.*, `categorie`.`nome` AS categoria_nome, `categorie`.`descrizione` AS categoria_descrizione, `categorie`.`max_scelte`,
                 COUNT(scelte_settimana.`id`) AS prenotazioni
             FROM `laboratori` 
             LEFT JOIN `categorie` ON `laboratori`.`id_categoria` = `categorie`.`id`
@@ -99,7 +99,8 @@ class Laboratori extends Database {
             ) scelte_settimana
             ON `laboratori`.`id` = scelte_settimana.`id_laboratorio`
             WHERE 1
-            GROUP BY `laboratori`.id",
+            GROUP BY `laboratori`.id
+            ORDER BY `laboratori`.`id_categoria`, `laboratori`.`id`",
             array(
                 array(':codice', $codice, PDO::PARAM_STR)
             )
