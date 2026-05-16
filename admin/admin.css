@@ -68,4 +68,7 @@ h1{font-size:1.75rem;font-weight:700;margin-bottom:1.5rem}
 .fill-mode-btn:hover:not(.active){color:var(--text)}
 .fill-mode-btn.active{background:var(--bg-card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .fill-bar-fill.demand{background:linear-gradient(90deg,var(--warning),var(--danger))}
+code.copyable{cursor:pointer;padding:.2rem .5rem;border-radius:6px;background:rgba(108,92,231,.15);color:var(--accent-light);font-size:.85em;transition:background .15s,color .15s,transform .1s;display:inline-block;user-select:all}
+code.copyable:hover{background:rgba(108,92,231,.3);transform:scale(1.03)}
+code.copyable.copied{background:rgba(0,184,148,.25);color:var(--success);transform:scale(1)}
 @media(max-width:768px){.admin-sidebar{transform:translateX(-100%)}.admin-sidebar.open{transform:translateX(0)}.admin-main{margin-left:0;padding:1rem}.stats-grid{grid-template-columns:repeat(2,1fr)}}

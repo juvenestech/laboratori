@@ -6,6 +6,21 @@ var _dashAllLabs = [];
 var _dashCatId = 'all';
 var _dashMode = 'fill'; // 'fill' | 'demand'
 
+// === UTILITIES ===
+window.copyCode = function(text, el) {
+    navigator.clipboard.writeText(text).then(() => {
+        $(el).addClass('copied').attr('title', '✓ Copiato!');
+        setTimeout(() => $(el).removeClass('copied').attr('title', 'Clicca per copiare'), 1500);
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        $(el).addClass('copied');
+        setTimeout(() => $(el).removeClass('copied'), 1500);
+    });
+};
+
 // Navigation
 $('.sidebar-nav .nav-item').click(function() {
     $('.sidebar-nav .nav-item').removeClass('active');
@@ -362,7 +377,7 @@ function loadCodici() {
     $.get(`${API}/codici`, (data) => {
         let html = '';
         (data || []).forEach(c => {
-            html += `<tr><td><code>${c.codice}</code></td><td>${c.iscritto}</td><td>${c.id_settimana}</td><td>${c.expired ? '⛔ Sì' : '✅ No'}</td></tr>`;
+            html += `<tr><td><code class="copyable" onclick="copyCode('${c.codice}', this)" title="Clicca per copiare">${c.codice}</code></td><td>${c.iscritto}</td><td>${c.id_settimana}</td><td>${c.expired ? '⛔ Sì' : '✅ No'}</td></tr>`;
         });
         $('#tblCodici tbody').html(html);
     });
@@ -373,7 +388,12 @@ $('#btnGenCodice').click(() => {
         iscritto: $('#genIscritto').val(),
         settimana: $('#genSettimana').val()
     }, (data) => {
-        $('#genResult').html(`<span class="text-success">Codice generato: <code>${data[0]?.codice || 'Errore'}</code></span>`);
+        const cod = data[0]?.codice || '';
+        if (cod) {
+            $('#genResult').html(`<span class="text-success">Codice generato: <code class="copyable" onclick="copyCode('${cod}', this)" title="Clicca per copiare">${cod}</code> <small class="text-muted ms-1">(clicca per copiare)</small></span>`);
+        } else {
+            $('#genResult').html('<span class="text-danger">Errore nella generazione</span>');
+        }
         loadCodici();
     }).fail(() => {
         $('#genResult').html('<span class="text-danger">Errore nella generazione</span>');
