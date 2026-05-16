@@ -1,6 +1,11 @@
 // === Admin Panel JS ===
 const API = '../api';
 
+// Dashboard state
+var _dashAllLabs = [];
+var _dashCatId = 'all';
+var _dashMode = 'fill'; // 'fill' | 'demand'
+
 // Navigation
 $('.sidebar-nav .nav-item').click(function() {
     $('.sidebar-nav .nav-item').removeClass('active');
@@ -42,8 +47,10 @@ function loadDashboard() {
     });
     $.get(`${API}/laboratori`, (data) => {
         if (data) {
+            _dashAllLabs = data;
             $('#statLaboratori').text(data.length);
-            renderFillBars(data);
+            buildDashTabs(data);
+            renderDashBars();
         }
     });
     $.get(`${API}/codici`, (data) => {
@@ -54,21 +61,78 @@ function loadDashboard() {
     });
 }
 
-function renderFillBars(labs) {
-    let html = '';
-    labs.forEach(lab => {
-        const pct = lab.posti > 0 ? Math.round((lab.prenotazioni / lab.posti) * 100) : 0;
-        let cls = '';
-        if (pct >= 100) cls = 'full';
-        else if (pct >= 75) cls = 'high';
-        html += `<div class="fill-bar-row">
-            <div class="fill-bar-label" title="${lab.nome}">${lab.nome}</div>
-            <div class="fill-bar-track"><div class="fill-bar-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
-            <div class="fill-bar-count">${lab.prenotazioni || 0}/${lab.posti}</div>
-        </div>`;
+function buildDashTabs(labs) {
+    const cats = {};
+    (labs || []).forEach(l => {
+        if (l.id_categoria && l.categoria_nome) cats[l.id_categoria] = l.categoria_nome;
     });
-    $('#fillBars').html(html || '<p class="text-muted">Nessun laboratorio.</p>');
+    let html = `<li class="lab-tab" data-cat-id="all">Tutti</li>`;
+    Object.entries(cats).forEach(([id, nome]) => {
+        html += `<li class="lab-tab" data-cat-id="${id}">${nome}</li>`;
+    });
+    $('#dashCategoryTabs').html(html);
+    const target = `#dashCategoryTabs .lab-tab[data-cat-id="${_dashCatId}"]`;
+    $(target).length ? $(target).addClass('active') : $('#dashCategoryTabs .lab-tab:first').addClass('active');
 }
+
+function renderDashBars() {
+    let labs = _dashCatId === 'all' ? _dashAllLabs : _dashAllLabs.filter(l => String(l.id_categoria) === String(_dashCatId));
+    if (!labs.length) {
+        $('#fillBars').html('<p class="text-muted">Nessun laboratorio in questa categoria.</p>');
+        return;
+    }
+    let html = '';
+    if (_dashMode === 'fill') {
+        labs = [...labs].sort((a, b) => {
+            const pa = a.posti > 0 ? a.prenotazioni / a.posti : 0;
+            const pb = b.posti > 0 ? b.prenotazioni / b.posti : 0;
+            return pb - pa;
+        });
+        labs.forEach(lab => {
+            const pct = lab.posti > 0 ? Math.round((lab.prenotazioni / lab.posti) * 100) : 0;
+            let cls = pct >= 100 ? 'full' : pct >= 75 ? 'high' : '';
+            html += `<div class="fill-bar-row">
+                <div class="fill-bar-label" title="${lab.nome}">${lab.nome}</div>
+                <div class="fill-bar-track"><div class="fill-bar-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
+                <div class="fill-bar-count">${lab.prenotazioni || 0}/${lab.posti} (${pct}%)</div>
+            </div>`;
+        });
+    } else {
+        const maxDemand = Math.max(...labs.map(l => l.prenotazioni || 0), 1);
+        labs = [...labs].sort((a, b) => (b.prenotazioni || 0) - (a.prenotazioni || 0));
+        labs.forEach(lab => {
+            const count = lab.prenotazioni || 0;
+            const pct = Math.round((count / maxDemand) * 100);
+            html += `<div class="fill-bar-row">
+                <div class="fill-bar-label" title="${lab.nome}">${lab.nome}</div>
+                <div class="fill-bar-track"><div class="fill-bar-fill demand" style="width:${pct}%"></div></div>
+                <div class="fill-bar-count">${count} richieste</div>
+            </div>`;
+        });
+    }
+    $('#fillBars').html(html);
+}
+
+$(document).on('click', '#dashCategoryTabs .lab-tab', function() {
+    $('#dashCategoryTabs .lab-tab').removeClass('active');
+    $(this).addClass('active');
+    _dashCatId = String($(this).data('cat-id'));
+    renderDashBars();
+});
+
+$('#btnModeFill').click(function() {
+    _dashMode = 'fill';
+    $('.fill-mode-btn').removeClass('active');
+    $(this).addClass('active');
+    renderDashBars();
+});
+
+$('#btnModeDemand').click(function() {
+    _dashMode = 'demand';
+    $('.fill-mode-btn').removeClass('active');
+    $(this).addClass('active');
+    renderDashBars();
+});
 
 // === EDIZIONI ===
 function loadEdizioni() {

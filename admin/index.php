@@ -121,7 +121,20 @@ if(!$AUTH) {
                 </div>
             </div>
             <div class="card mt-4">
-                <div class="card-header"><h5>Riempimento Laboratori</h5></div>
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h5>Riempimento Laboratori</h5>
+                        <div class="fill-mode-toggle">
+                            <button class="fill-mode-btn active" id="btnModeFill">📊 Riempimento</button>
+                            <button class="fill-mode-btn" id="btnModeDemand">🔥 Più richiesti</button>
+                        </div>
+                    </div>
+                    <div class="lab-tabs-wrapper mt-2" style="margin-bottom:0;padding-bottom:0">
+                        <ul class="lab-tabs" id="dashCategoryTabs">
+                            <li class="lab-tab" data-cat-id="all">Tutti</li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="card-body" id="fillBars">
                     <p class="text-muted">Seleziona un'edizione per visualizzare i dati.</p>
                 </div>
