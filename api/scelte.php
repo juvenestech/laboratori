@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     else
         $ret = $scelte->getAll();
 
+    if($ret === false) http_response_code(400);
     echo json_encode($ret);
-    if(!$ret) http_response_code(400);
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $scelte = new Scelte();
 

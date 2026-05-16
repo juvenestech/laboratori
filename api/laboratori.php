@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $ret = $laboratori->getAll();
     }
 
+    if($ret === false) http_response_code(400);
     echo json_encode($ret);
-    if(!$ret) http_response_code(400);
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $path = $_SERVER['DOCUMENT_ROOT'];
     $path .= "/private/auth.php";
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         return;
     }
 
-    if(!$ret) http_response_code(400);
+    if($ret === false) http_response_code(400);
     echo json_encode($ret);
 } else
     http_response_code(405);

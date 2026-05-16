@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $ret = $settimane->addSettimana($nome, $id_edizione);
     }
 
-    if (!$ret) {
+    if ($ret === false) {
         http_response_code(400);
         echo json_encode(["error" => "Errore nel salvataggio"]);
         return;

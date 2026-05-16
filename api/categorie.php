@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         return;
     }
 
-    if(!$ret) http_response_code(400);
+    if($ret === false) http_response_code(400);
     echo json_encode($ret);
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {

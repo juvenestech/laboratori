@@ -27,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $ret = $codici->getAll();
     }    
 
+    if($ret === false) http_response_code(400);
     echo json_encode($ret);
-    if(!$ret) http_response_code(400);
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $path = $_SERVER['DOCUMENT_ROOT'];
     $path .= "/private/auth.php";
@@ -40,15 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $codici = new Codici();
+    $ret = false;
 
     if(isset($_POST['iscritto']) && isset($_POST['settimana'])) {
         $ret = $codici->addCodice($_POST['iscritto'], $_POST['settimana']);
     }
 
-    if(!$ret) {
+    if($ret === false || $ret === null) {
         http_response_code(400);
         echo json_encode(["error" => "Errore nella creazione del codice"]);
+    } else {
+        echo json_encode($ret);
     }
-    echo json_encode($ret);
 } else
     http_response_code(404);
