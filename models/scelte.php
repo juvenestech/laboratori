@@ -64,15 +64,15 @@ class Scelte extends Database {
      */
     function deleteScelta($codice, $id_laboratorio) {
         try {
-            $stmt = $this->conn->prepare(
+            return $this->delete(
                 "DELETE FROM " . self::$table_name .
-                " WHERE codice = :codice AND id_laboratorio = :laboratorio"
-            );
-            $stmt->bindValue(':codice', $codice, PDO::PARAM_STR);
-            $stmt->bindValue(':laboratorio', $id_laboratorio, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->rowCount() > 0;
-        } catch (PDOException $e) {
+                " WHERE codice = :codice AND id_laboratorio = :laboratorio",
+                array(
+                    array(':codice', $codice, PDO::PARAM_STR),
+                    array(':laboratorio', $id_laboratorio, PDO::PARAM_INT)
+                )
+            ) > 0;
+        } catch (Exception $e) {
             error_log("deleteScelta error: " . $e->getMessage());
             throw new Exception("Errore nella rimozione della scelta.", (int)$e->getCode());
         }

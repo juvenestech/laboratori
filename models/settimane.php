@@ -88,11 +88,13 @@ class Settimane extends Database {
             return false;
         }
         try {
-            $stmt = $this->conn->prepare("DELETE FROM " . self::$table_name . " WHERE id = :id");
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->rowCount() > 0;
-        } catch (PDOException $e) {
+            return $this->delete(
+                "DELETE FROM " . self::$table_name . " WHERE id = :id",
+                array(
+                    array(':id', $id, PDO::PARAM_INT)
+                )
+            ) > 0;
+        } catch (Exception $e) {
             error_log("deleteSettimana error: " . $e->getMessage());
             return false;
         }

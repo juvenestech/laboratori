@@ -56,13 +56,18 @@ class Database {
     private function executeStatement($query = "", $params = []) {
         try {
             $stmt = $this->conn->prepare($query);
-            if ($stmt === false)
-                throw new Exception("Unable to do prepared statement: " . $query);
+            if ($stmt === false) {
+                $errorInfo = $this->conn->errorInfo();
+                throw new Exception("Unable to do prepared statement: " . $query . " - Error: " . $errorInfo[2]);
+            }
 
             foreach ($params as $param)
                 $stmt->bindValue($param[0], $param[1], $param[2]);
 
-            $stmt->execute();
+            if (!$stmt->execute()) {
+                $errorInfo = $stmt->errorInfo();
+                throw new Exception("Execution failed: " . $errorInfo[2]);
+            }
 
             return $stmt;
         } catch (Exception $e) {
@@ -73,9 +78,17 @@ class Database {
     public function insert($query = "", $params = []) {
         try {
             $stmt = $this->executeStatement($query, $params);
-            $id = $this->conn->lastInsertId();
-            
-            return $id;
+            return $this->conn->lastInsertId();
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+        return false;
+    }
+
+    public function delete($query = "", $params = []) {
+        try {
+            $stmt = $this->executeStatement($query, $params);
+            return $stmt->rowCount();
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
