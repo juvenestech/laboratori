@@ -162,6 +162,12 @@ if(!$AUTH) {
                 <h1>Laboratori</h1>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLaboratorio">+ Nuovo Laboratorio</button>
             </div>
+            <!-- Tab categorie -->
+            <div class="lab-tabs-wrapper">
+                <ul class="lab-tabs" id="labCategoryTabs">
+                    <li class="lab-tab active" data-cat-id="all">Tutti</li>
+                </ul>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover" id="tblLaboratori">
                     <thead><tr><th>ID</th><th>Nome</th><th>Categoria</th><th>Posti</th><th>Prenotazioni</th><th>Azioni</th></tr></thead>

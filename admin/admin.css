@@ -34,7 +34,7 @@ h1{font-size:1.75rem;font-weight:700;margin-bottom:1.5rem}
 .table{color:var(--text);--bs-table-bg:transparent}
 .table thead th{background:var(--bg-card);border-bottom:2px solid var(--border);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:.75rem 1rem}
 .table tbody td{padding:.75rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle}
-.table-hover tbody tr:hover{background:var(--bg-hover)}
+.table-hover tbody tr:hover{background:var(--bg-hover);color:var(--text)}
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);color:var(--text)}
 .card-header{background:transparent;border-bottom:1px solid var(--border);padding:1rem 1.25rem}
 .card-header h5{margin:0;font-weight:600}
@@ -57,4 +57,10 @@ h1{font-size:1.75rem;font-weight:700;margin-bottom:1.5rem}
 .form-control,.form-select{background:var(--bg-dark);border:1px solid var(--border);color:var(--text)}
 .form-control:focus,.form-select:focus{background:var(--bg-dark);border-color:var(--accent);color:var(--text);box-shadow:0 0 0 3px rgba(108,92,231,.2)}
 .form-label{font-size:.85rem;font-weight:500;color:var(--text-muted)}
+.lab-tabs-wrapper{overflow-x:auto;margin-bottom:1.25rem;padding-bottom:.25rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.lab-tabs-wrapper::-webkit-scrollbar{height:4px}.lab-tabs-wrapper::-webkit-scrollbar-track{background:transparent}.lab-tabs-wrapper::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.lab-tabs{list-style:none;display:flex;gap:.5rem;padding:0;margin:0;white-space:nowrap}
+.lab-tab{padding:.45rem 1.1rem;border-radius:20px;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);transition:all .18s;user-select:none;letter-spacing:.02em}
+.lab-tab:hover{color:var(--text);border-color:var(--accent);background:rgba(108,92,231,.08)}
+.lab-tab.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-light));border-color:transparent;box-shadow:0 2px 10px rgba(108,92,231,.35)}
 @media(max-width:768px){.admin-sidebar{transform:translateX(-100%)}.admin-sidebar.open{transform:translateX(0)}.admin-main{margin-left:0;padding:1rem}.stats-grid{grid-template-columns:repeat(2,1fr)}}

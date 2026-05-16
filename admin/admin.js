@@ -158,25 +158,58 @@ $('#btnSaveCategoria').click(() => {
 });
 
 // === LABORATORI ===
+var _allLabs = [];   // cache di tutti i laboratori
+var _activeCatId = 'all';
+
+function renderLabTable(labs) {
+    let html = '';
+    labs.forEach(l => {
+        html += `<tr>
+            <td>${l.id}</td><td>${l.nome}</td><td>${l.categoria_nome || '—'}</td>
+            <td>${l.posti}</td><td>${l.prenotazioni || 0}</td>
+            <td><button class="btn btn-sm btn-outline-primary" onclick="editLab(${l.id})">Modifica</button></td>
+        </tr>`;
+    });
+    $('#tblLaboratori tbody').html(html || '<tr><td colspan="6" class="text-muted text-center">Nessun laboratorio in questa categoria.</td></tr>');
+}
+
+function buildLabTabs(cats) {
+    let html = '<li class="lab-tab active" data-cat-id="all">Tutti</li>';
+    (cats || []).forEach(c => {
+        html += `<li class="lab-tab" data-cat-id="${c.id}">${c.nome}</li>`;
+    });
+    $('#labCategoryTabs').html(html);
+    // ripristina tab attiva
+    $(`#labCategoryTabs .lab-tab[data-cat-id="${_activeCatId}"]`).addClass('active');
+}
+
+function filterLabsByTab(catId) {
+    _activeCatId = catId;
+    const filtered = catId === 'all' ? _allLabs : _allLabs.filter(l => String(l.id_categoria) === String(catId));
+    renderLabTable(filtered);
+}
+
 function loadLaboratori() {
-    // Load categories for dropdown
+    // Carica categorie: dropdown modal + tab bar
     $.get(`${API}/categorie`, (cats) => {
         let opts = '<option value="">-- Nessuna --</option>';
         (cats || []).forEach(c => { opts += `<option value="${c.id}">${c.nome}</option>`; });
         $('#labCategoria').html(opts);
+        buildLabTabs(cats);
     });
+    // Carica laboratori
     $.get(`${API}/laboratori`, (data) => {
-        let html = '';
-        (data || []).forEach(l => {
-            html += `<tr>
-                <td>${l.id}</td><td>${l.nome}</td><td>${l.categoria_nome || '—'}</td>
-                <td>${l.posti}</td><td>${l.prenotazioni || 0}</td>
-                <td><button class="btn btn-sm btn-outline-primary" onclick="editLab(${l.id})">Modifica</button></td>
-            </tr>`;
-        });
-        $('#tblLaboratori tbody').html(html);
+        _allLabs = data || [];
+        filterLabsByTab(_activeCatId);
     });
 }
+
+// Delegazione click sulle tab (funziona anche dopo rebuild del DOM)
+$(document).on('click', '#labCategoryTabs .lab-tab', function() {
+    $('#labCategoryTabs .lab-tab').removeClass('active');
+    $(this).addClass('active');
+    filterLabsByTab($(this).data('cat-id'));
+});
 
 window.editLab = function(id) {
     $.get(`${API}/laboratori?id=${id}`, (data) => {
