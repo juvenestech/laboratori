@@ -1,4 +1,4 @@
-:root{--sidebar-w:240px;--bg-dark:#0f1117;--bg-card:#1a1d27;--bg-hover:#252836;--accent:#6c5ce7;--accent-light:#a29bfe;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--text:#dfe6e9;--text-muted:#636e72;--border:#2d3436;--radius:12px}
+:root{--sidebar-w:240px;--bg-dark:#0f1117;--bg-card:#1a1d27;--bg-hover:#8d8d8d;--accent:#6c5ce7;--accent-light:#a29bfe;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--text:#dfe6e9;--text-muted:#636e72;--border:#2d3436;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-dark);color:var(--text);display:flex;min-height:100vh}
 .admin-login-body{align-items:center;justify-content:center;background:linear-gradient(135deg,#0f1117,#1a1d27,#252836)}

@@ -11,7 +11,7 @@ if(!$AUTH) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — Scelta Laboratori</title>
+    <title>Admin — Scelta Attivit&agrave;</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="admin.css">
@@ -19,7 +19,7 @@ if(!$AUTH) {
 <body class="admin-login-body">
     <div class="login-card">
         <h2>🔒 Admin Panel</h2>
-        <p class="text-muted">Scelta Laboratori</p>
+        <p class="text-muted">Scelta Attivit&agrave;</p>
         <form id="loginForm">
             <div class="mb-3">
                 <input type="text" class="form-control" id="username" placeholder="Username" required>
@@ -54,7 +54,7 @@ if(!$AUTH) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — Scelta Laboratori</title>
+    <title>Admin — Scelta Attivit&agrave;</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="admin.css">
@@ -64,7 +64,7 @@ if(!$AUTH) {
     <nav class="admin-sidebar">
         <div class="sidebar-brand">
             <span class="brand-icon">🧪</span>
-            <span class="brand-text">Laboratori</span>
+            <span class="brand-text">Attivit&agrave; Laboratoriali</span>
         </div>
         <ul class="sidebar-nav">
             <li class="nav-item active" data-section="dashboard">
@@ -77,7 +77,7 @@ if(!$AUTH) {
                 <span class="nav-icon">📁</span> Categorie
             </li>
             <li class="nav-item" data-section="laboratori">
-                <span class="nav-icon">🎨</span> Laboratori
+                <span class="nav-icon">🎨</span> Attivit&agrave;
             </li>
             <li class="nav-item" data-section="settimane">
                 <span class="nav-icon">🗓️</span> Settimane
@@ -109,7 +109,7 @@ if(!$AUTH) {
                 </div>
                 <div class="stat-card accent">
                     <div class="stat-value" id="statLaboratori">—</div>
-                    <div class="stat-label">Laboratori</div>
+                    <div class="stat-label">Attivit&agrave;</div>
                 </div>
                 <div class="stat-card success">
                     <div class="stat-value" id="statCodici">—</div>
@@ -123,7 +123,7 @@ if(!$AUTH) {
             <div class="card mt-4">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h5>Riempimento Laboratori</h5>
+                        <h5>Riempimento Attivit&agrave;</h5>
                         <div class="fill-mode-toggle">
                             <button class="fill-mode-btn active" id="btnModeFill">📊 Riempimento</button>
                             <button class="fill-mode-btn" id="btnModeDemand">🔥 Più richiesti</button>
@@ -172,8 +172,8 @@ if(!$AUTH) {
         <!-- LABORATORI -->
         <section id="sec-laboratori" class="admin-section">
             <div class="section-header">
-                <h1>Laboratori</h1>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLaboratorio">+ Nuovo Laboratorio</button>
+                <h1>Attivit&agrave;</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLaboratorio">+ Nuova Attivit&agrave;</button>
             </div>
             <!-- Tab categorie -->
             <div class="lab-tabs-wrapper">
@@ -319,7 +319,7 @@ if(!$AUTH) {
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Oggetto</label>
-                        <input type="text" class="form-control" id="emailOggetto" value="Il tuo codice per la scelta dei laboratori">
+                        <input type="text" class="form-control" id="emailOggetto" value="Il tuo codice per la scelta delle attività">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Template HTML <small class="text-muted">(variabili: \${nome}, \${cognome}, \${codice})</small></label>
@@ -365,7 +365,7 @@ if(!$AUTH) {
     </div></div></div>
 
     <div class="modal fade" id="modalLaboratorio" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
-        <div class="modal-header"><h5 class="modal-title">Laboratorio</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-header"><h5 class="modal-title">Attivit&agrave;</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
         <div class="modal-body">
             <input type="hidden" id="labId">
             <div class="mb-3"><label class="form-label">Nome</label><input type="text" class="form-control" id="labNome"></div>
