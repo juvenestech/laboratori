@@ -230,6 +230,7 @@ if (codice && $('.categoria-step').length > 0) {
         });
         updateBadges();
         updateCounter();
+        updateButtons();
     }).then(() => {
         refreshPosti();
     });
