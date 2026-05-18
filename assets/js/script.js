@@ -152,6 +152,7 @@ $(document).on('click', '.laboratorio', function () {
             ordineScelte[catId] = arr.filter(id => id !== labId);
             updateBadges();
             updateCounter();
+            updateButtons();
             showToast(`Rimosso da le tue scelte`, 'info', 2000);
         }).fail((xhr) => {
             const msg = (xhr.responseJSON && xhr.responseJSON.error) || 'Errore nella rimozione della scelta';
@@ -179,6 +180,7 @@ $(document).on('click', '.laboratorio', function () {
             ordineScelte[catId].push(labId);
             updateBadges();
             updateCounter();
+            updateButtons();
             showToast(`✓ "${$card.find('.name').text()}" aggiunto alle tue scelte!`, 'success', 2500);
         }).fail((xhr) => {
             const msg = (xhr.responseJSON && xhr.responseJSON.error) || 'Errore nel salvataggio della scelta. Il laboratorio potrebbe essere esaurito.';
@@ -190,7 +192,6 @@ $(document).on('click', '.laboratorio', function () {
     } else {
         showToast(`Puoi scegliere al massimo ${SELEZIONABILI} attività per questo passo!`, 'warning');
     }
-    updateButtons();
 });
 
 // === Caricamento iniziale: scelte già fatte + posti esauriti ===
