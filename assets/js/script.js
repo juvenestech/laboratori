@@ -190,6 +190,7 @@ $(document).on('click', '.laboratorio', function () {
     } else {
         showToast(`Puoi scegliere al massimo ${SELEZIONABILI} attività per questo passo!`, 'warning');
     }
+    updateButtons();
 });
 
 // === Caricamento iniziale: scelte già fatte + posti esauriti ===
