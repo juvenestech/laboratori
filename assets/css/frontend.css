@@ -451,6 +451,20 @@ body {
     box-shadow: 0 2px 12px rgba(255, 107, 107, 0.3);
 }
 
+.btn-conferma:disabled,
+.btn-conferma.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-conferma:disabled:hover,
+.btn-conferma.disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3);
+}
+
 .btn-indietro {
     background: transparent;
     color: var(--dark-text);

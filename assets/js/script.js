@@ -110,6 +110,14 @@ function updateButtons() {
     } else {
         $('#conferma').text('CONFERMA');
     }
+
+    const max = getMaxScelte();
+    const count = getCurrentOrdine().length;
+    if (count >= max) {
+        $('#conferma').prop('disabled', false).removeClass('disabled');
+    } else {
+        $('#conferma').prop('disabled', true).addClass('disabled');
+    }
 }
 
 // === Click su card laboratorio: send immediato real-time ===
