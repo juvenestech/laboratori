@@ -39,6 +39,14 @@ if (isset($_GET['done'])) {
 
         if (!$lista) $STATO = 'NONVALIDO';
         else $STATO = 'OK';
+
+
+        $path = $_SERVER['DOCUMENT_ROOT'];
+        $path .= "/models/edizioni.php";
+        include_once $path;
+        $edizione = new Edizioni();
+        $edizione_attiva = $edizione->getActive();
+        if (!$edizione_attiva) $STATO = 'NOEDIZIONE';
     }
 }
 ?>
@@ -48,13 +56,15 @@ if (isset($_GET['done'])) {
         <div class="container" style="padding-bottom: 120px;">
             <form onsubmit="return false">
                 <div class="intro" style="padding: 3rem 1rem 1rem 1rem;">
-                    <h1 class="text-center page-title">🎯 Scelta Attività</h1>
+                    <h1 class="text-center page-title">Scelta Attività</h1>
+                    <h3 class="text-center page-subtitle"><?= htmlspecialchars($edizione_attiva[0]['anno'], ENT_QUOTES, 'UTF-8') ?></h3>
                     <p class="text-center page-subtitle">
                         <?php
                         if ($STATO == 'DONE') echo '✨ Grazie per aver inviato le tue preferenze!';
                         elseif ($STATO == 'OK') echo '📝 Scegli i laboratori che più ti piacciono!';
                         elseif ($STATO == 'NOCODICE') echo '🔑 Inserisci il tuo codice personale';
                         elseif ($STATO == 'EXPIRED') echo '⏰ Il codice inserito è scaduto<br>Immetti un codice valido';
+                        elseif ($STATO == 'NOEDIZIONE') echo '📅 Nessuna edizione attiva disponibile';
                         else echo '❌ Il codice inserito non è valido<br>Immetti il tuo codice';
                         ?>
                     </p>
