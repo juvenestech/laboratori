@@ -57,7 +57,7 @@ if (isset($_GET['done'])) {
             <form onsubmit="return false">
                 <div class="intro" style="padding: 3rem 1rem 1rem 1rem;">
                     <h1 class="text-center page-title">Scelta Attività</h1>
-                    <h3 class="text-center page-subtitle"><?= htmlspecialchars($edizione_attiva[0]['anno'], ENT_QUOTES, 'UTF-8') ?></h3>
+                    <h3 class="text-center page-subtitle"><?= htmlspecialchars($edizione_attiva[0]['nome'], ENT_QUOTES, 'UTF-8') ?></h3>
                     <p class="text-center page-subtitle">
                         <?php
                         if ($STATO == 'DONE') echo '✨ Grazie per aver inviato le tue preferenze!';
