@@ -5,9 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="Scegli i tuoi laboratori preferiti per le attività estive Juvenes">
+    <meta name="theme-color" content="#FF6B6B">
     <title>Scelta Attività Laboratoriali</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/frontend.css">
 </head>
@@ -42,19 +43,19 @@ if (isset($_GET['done'])) {
 }
 ?>
 
-<body style="background: url(&quot;assets/img/Juvenes-immagine-ingresso-per-sito-1.jpg&quot;) center fixed no-repeat;background-size: cover;">
-    <section class="projects-horizontal" style="background-color: #00000000">
-        <div class="container" style="padding-bottom: 200px;">
+<body>
+    <section class="projects-horizontal">
+        <div class="container" style="padding-bottom: 120px;">
             <form onsubmit="return false">
-                <div class="intro">
-                    <h1 class="text-center page-title">SCELTA LABORATORI</h1>
+                <div class="intro" style="padding: 3rem 1rem 1rem 1rem;">
+                    <h1 class="text-center page-title">🎯 Scelta Attività</h1>
                     <p class="text-center page-subtitle">
                         <?php
-                        if ($STATO == 'DONE') echo 'Grazie per aver inviato le tue preferenze!';
-                        elseif ($STATO == 'OK') echo 'Scegli i laboratori che più ti piacciono!';
-                        elseif ($STATO == 'NOCODICE') echo 'Inserisci il tuo codice';
-                        elseif ($STATO == 'EXPIRED') echo 'Il codice inserito è scaduto<br>Immetti un codice valido';
-                        else echo 'Il codice inserito non è valido<br>Immetti il tuo codice';
+                        if ($STATO == 'DONE') echo '✨ Grazie per aver inviato le tue preferenze!';
+                        elseif ($STATO == 'OK') echo '📝 Scegli i laboratori che più ti piacciono!';
+                        elseif ($STATO == 'NOCODICE') echo '🔑 Inserisci il tuo codice personale';
+                        elseif ($STATO == 'EXPIRED') echo '⏰ Il codice inserito è scaduto<br>Immetti un codice valido';
+                        else echo '❌ Il codice inserito non è valido<br>Immetti il tuo codice';
                         ?>
                     </p>
                 </div>
@@ -82,24 +83,24 @@ if (isset($_GET['done'])) {
                 ?>
 
                 <?php if ($STATO == 'OK'): ?>
-                <!-- Step Indicator (Fix 4b) -->
+                <!-- Step Indicator (Redesigned) -->
                 <?php if ($totalSteps > 1): ?>
-                <div class="step-indicator" id="stepIndicator">
+                <div class="step-indicator" id="stepIndicator" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="<?= $totalSteps ?>">
                     <?php for ($i = 0; $i < $totalSteps; $i++): ?>
-                        <div class="step-dot<?= $i === 0 ? ' active' : '' ?>" data-step-dot="<?= $i ?>">
+                        <div class="step-dot<?= $i === 0 ? ' active' : '' ?>" data-step-dot="<?= $i ?>" aria-label="Step <?= $i + 1 ?>">
                             <span class="step-num"><?= $i + 1 ?></span>
                             <span class="step-name"><?= htmlspecialchars($categorie_steps[$i]['nome'], ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
                         <?php if ($i < $totalSteps - 1): ?>
-                            <div class="step-connector"></div>
+                            <div class="step-connector" aria-hidden="true"></div>
                         <?php endif; ?>
                     <?php endfor; ?>
                 </div>
                 <?php endif; ?>
 
-                <!-- Counter real-time (§5) -->
-                <div class="selection-counter" id="selectionCounter">
-                    <span id="counterText">Hai selezionato <strong>0</strong> laboratori</span>
+                <!-- Counter real-time (Redesigned) -->
+                <div class="selection-counter" id="selectionCounter" aria-live="polite" role="status">
+                    <span id="counterText">Hai selezionato <strong>0</strong> su <strong id="maxCount"><?= $categorie_steps[0]['max_scelte'] ?? 5 ?></strong> laboratori</span>
                 </div>
                 <?php endif; ?>
 
@@ -116,12 +117,12 @@ if (isset($_GET['done'])) {
                         echo '<p class="categoria-info">Scegli <strong>' . htmlspecialchars($cat['max_scelte'], ENT_QUOTES, 'UTF-8') . '</strong> laboratori in ordine di preferenza.</p>';
                         echo '<div class="row projects">';
                         foreach ($cat['laboratori'] as $lab) {
-                            echo '<div class="col-sm-6 d-flex mx-auto item">
-                                <label class="row laboratorio" data-lab-id="' . htmlspecialchars($lab['id'], ENT_QUOTES, 'UTF-8') . '" data-posti="' . htmlspecialchars($lab['posti'], ENT_QUOTES, 'UTF-8') . '" data-prenotazioni="' . htmlspecialchars($lab['prenotazioni'], ENT_QUOTES, 'UTF-8') . '" data-max-scelte="' . htmlspecialchars($cat['max_scelte'], ENT_QUOTES, 'UTF-8') . '" data-categoria-id="' . htmlspecialchars($cat['id'], ENT_QUOTES, 'UTF-8') . '" data-categoria="' . htmlspecialchars($cat['nome'], ENT_QUOTES, 'UTF-8') . '">
-                                    <input type="checkbox" class="lab-checkbox visually-hidden" aria-label="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '">
+                            echo '<div class="col-12 col-sm-6 col-lg-4 d-flex mx-auto item">
+                                <label class="laboratorio" data-lab-id="' . htmlspecialchars($lab['id'], ENT_QUOTES, 'UTF-8') . '" data-posti="' . htmlspecialchars($lab['posti'], ENT_QUOTES, 'UTF-8') . '" data-prenotazioni="' . htmlspecialchars($lab['prenotazioni'], ENT_QUOTES, 'UTF-8') . '" data-max-scelte="' . htmlspecialchars($cat['max_scelte'], ENT_QUOTES, 'UTF-8') . '" data-categoria-id="' . htmlspecialchars($cat['id'], ENT_QUOTES, 'UTF-8') . '" data-categoria="' . htmlspecialchars($cat['nome'], ENT_QUOTES, 'UTF-8') . '" aria-label="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '">
+                                    <input type="checkbox" class="lab-checkbox visually-hidden" aria-label="Seleziona ' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '">
                                     <div class="lab-badge" aria-hidden="true"></div>
-                                    <div class="col-12 col-lg-5 d-flex align-items-center lab-image-wrap"><img class="img-fluid" src="' . htmlspecialchars($lab['gif'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '" loading="lazy"></div>
-                                    <div class="col lab-info">
+                                    <div class="lab-image-wrap"><img class="img-fluid" src="' . htmlspecialchars($lab['gif'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '" loading="lazy"></div>
+                                    <div class="lab-info">
                                         <h3 class="name">' . htmlspecialchars($lab['nome'], ENT_QUOTES, 'UTF-8') . '</h3>
                                         <p class="description">' . htmlspecialchars($lab['descrizione'], ENT_QUOTES, 'UTF-8') . '</p>
                                     </div>
@@ -131,13 +132,15 @@ if (isset($_GET['done'])) {
                         echo '</div></div>';
                     }
                 } elseif ($STATO != 'DONE') {
-                    echo '<div class="row projects"><input type="text"
+                    echo '<div class="row projects" style="margin-bottom: 100px;"><input type="text"
                         id="codice"
                         class="form-control codice-input"
                         pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"
                         title="Codice personale"
                         placeholder="Inserisci il tuo codice..."
-                        autocomplete="off"></div>';
+                        autocomplete="off"
+                        required
+                        aria-label="Codice personale"></div>';
                 }
                     ?>
                 </div>
@@ -172,7 +175,7 @@ if (isset($_GET['done'])) {
 
                     $laboratori = new Laboratori();
                     echo '<div class="done-recap"><h3>Ecco le tue scelte:</h3><ol class="done-list">';
-                    foreach ($lista as $scelta) 
+                    foreach ($lista as $scelta)
                         echo '<li>' . htmlspecialchars($laboratori->fromId($scelta['id_laboratorio'])[0]['nome'], ENT_QUOTES, 'UTF-8') . '</li>';
                     echo '</ol>';
                     echo '<small>Per qualsiasi dubbio, scrivi a <a href="mailto:iscrizioni+laboratori@juvenes.it">iscrizioni+laboratori@juvenes.it</a> o contatta un educatore.</small></div>';
@@ -182,7 +185,11 @@ if (isset($_GET['done'])) {
         </div>
     </section>
 
-    <div class="modal fade" id="modalErrore" tabindex="-1" aria-labelledby="modalErrore" aria-hidden="true">
+    <!-- Toast Container (Redesigned) -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal (Hidden, kept for compatibility) -->
+    <div class="modal fade" id="modalErrore" tabindex="-1" aria-labelledby="modalErrore" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">

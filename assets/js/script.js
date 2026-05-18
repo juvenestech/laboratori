@@ -8,6 +8,34 @@ var totalSteps = 0;
 var ordineScelte = {}; // { categoriaId: [labId, ...] }
 var modalErrore = document.getElementById('modalErrore') ? new bootstrap.Modal(document.getElementById('modalErrore'), {}) : null;
 
+// === Toast Notifications (Redesigned) ===
+function showToast(message, type = 'info', duration = 3000) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    if (duration > 0) {
+        setTimeout(() => {
+            toast.classList.add('remove');
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+
+    return toast;
+}
+
+function hideToasts() {
+    document.querySelectorAll('.toast').forEach(t => {
+        t.classList.add('remove');
+        setTimeout(() => t.remove(), 300);
+    });
+}
+
 // === Helpers ===
 function getCurrentStepEl() {
     return $(`.categoria-step[data-step="${currentStep}"]`);
@@ -31,6 +59,7 @@ function updateCounter() {
     const count = getCurrentOrdine().length;
     const max = getMaxScelte();
     $('#counterText').html(`Hai selezionato <strong>${count}</strong> su <strong>${max}</strong> laboratori`);
+    $('#maxCount').text(max);
     if (count >= max) {
         $('#selectionCounter').addClass('complete');
     } else {
@@ -115,10 +144,10 @@ $(document).on('click', '.laboratorio', function () {
             ordineScelte[catId] = arr.filter(id => id !== labId);
             updateBadges();
             updateCounter();
+            showToast(`Rimosso da le tue scelte`, 'info', 2000);
         }).fail((xhr) => {
             const msg = (xhr.responseJSON && xhr.responseJSON.error) || 'Errore nella rimozione della scelta';
-            $('#testoErrore').html(msg);
-            if (modalErrore) modalErrore.show();
+            showToast(msg, 'error');
         }).always(() => {
             $card.removeClass('busy');
         });
@@ -142,18 +171,16 @@ $(document).on('click', '.laboratorio', function () {
             ordineScelte[catId].push(labId);
             updateBadges();
             updateCounter();
+            showToast(`✓ "${$card.find('.name').text()}" aggiunto alle tue scelte!`, 'success', 2500);
         }).fail((xhr) => {
             const msg = (xhr.responseJSON && xhr.responseJSON.error) || 'Errore nel salvataggio della scelta. Il laboratorio potrebbe essere esaurito.';
-            $('#testoErrore').html(msg);
-            if (modalErrore) modalErrore.show();
-            // Aggiorna stato posti
+            showToast(msg, 'error');
             refreshPosti();
         }).always(() => {
             $card.removeClass('busy');
         });
     } else {
-        $('#testoErrore').html(`Puoi scegliere al massimo <strong>${SELEZIONABILI}</strong> attivit&agrave; per questo passo!`);
-        if (modalErrore) modalErrore.show();
+        showToast(`Puoi scegliere al massimo ${SELEZIONABILI} attività per questo passo!`, 'warning');
     }
 });
 
@@ -205,15 +232,17 @@ function goAvanti() {
     const max = getMaxScelte();
     const count = getCurrentOrdine().length;
     if (count < max) {
-        $('#testoErrore').html(`Devi scegliere esattamente <strong>${max}</strong> attivit&agrave; in questo passo prima di proseguire!`);
-        if (modalErrore) modalErrore.show();
+        showToast(`Devi scegliere esattamente ${max} attività in questo passo prima di proseguire!`, 'warning');
         return;
     }
     if (currentStep < totalSteps - 1) {
-        showStep(currentStep + 1);
+        showToast(`Perfetto! Procedi al passo successivo ✨`, 'success', 1500);
+        setTimeout(() => showStep(currentStep + 1), 300);
     } else {
-        // Ultimo step: tutte le scelte sono già state inviate real-time
-        window.location.href = "?done=" + encodeURIComponent(codice);
+        showToast(`Tutte le tue scelte sono state salvate! 🎉`, 'success', 1500);
+        setTimeout(() => {
+            window.location.href = "?done=" + encodeURIComponent(codice);
+        }, 600);
     }
 }
 
@@ -236,4 +265,17 @@ window.goIndietro = goIndietro;
 
 $(document).ready(function() {
     $('#indietro').click(goIndietro);
+
+    // Auto-focus codice input
+    const codiceInput = $('#codice');
+    if (codiceInput.length) {
+        codiceInput.focus();
+        // Enter key submit
+        codiceInput.keypress(function(e) {
+            if (e.which == 13) {
+                inviaCodice();
+                return false;
+            }
+        });
+    }
 });
