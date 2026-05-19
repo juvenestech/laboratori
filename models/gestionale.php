@@ -142,7 +142,8 @@ class GestionaleClient {
      */
     public function getIscrittiAttivita($idAttivita) {
         return $this->authenticatedGet('/attivita/iscrittiattivita.json', [
-            'id' => $idAttivita
+            'id' => $idAttivita,
+            'length' => 1000 // per sicurezza, se ci sono molte iscrizioni
         ]);
     }
 
