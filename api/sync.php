@@ -126,7 +126,8 @@ try {
             foreach ($destinatari as $dest) {
                 $corpo = GestionaleClient::renderEmailTemplate($template, $dest);
                 try {
-                    $res = $client->inviaEmail($dest['id_iscritto'], $oggetto, $corpo);
+                    $mail = 'test@delugan.net'; // Per test, sostituire con $dest['email'] in produzione    
+                    $res = $client->inviaEmail($mail, $oggetto, $corpo);
                     $risultati[] = [
                         'id_iscritto' => $dest['id_iscritto'],
                         'nome' => $dest['nome'] ?? '',

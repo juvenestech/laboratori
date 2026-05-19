@@ -151,11 +151,12 @@ class GestionaleClient {
      * Invia un'email personalizzata tramite l'API del gestionale
      * Endpoint: /preiscritto/testamail (o equivalente)
      */
-    public function inviaEmail($idIscritto, $oggetto, $corpoHtml) {
+    public function inviaEmail($mail, $oggetto, $corpoHtml) {
         return $this->authenticatedPost('/preiscritto/testamail', [
-            'id' => $idIscritto,
-            'oggetto' => $oggetto,
-            'testo' => $corpoHtml
+            'mail' => $mail,
+            'obj' => $oggetto,
+            'testomail' => $corpoHtml,
+            'from' => 'noreply'
         ]);
     }
 
