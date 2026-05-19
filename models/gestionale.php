@@ -11,12 +11,12 @@ class GestionaleClient {
      * Autentica l'admin al gestionale e salva il cookie di sessione JSESSIONID
      */
     public function login($username, $password) {
-        $ch = curl_init($this->baseUrl . '/login/auth');
+        $ch = curl_init($this->baseUrl . '/j_spring_security_check');
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query([
-                'username' => $username,
-                'password' => $password
+                'j_username' => $username,
+                'j_password' => $password
             ]),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => true,

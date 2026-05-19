@@ -117,7 +117,7 @@ if (isset($_GET['done'])) {
 
                 <!-- Counter real-time (Redesigned) -->
                 <div class="selection-counter" id="selectionCounter" aria-live="polite" role="status">
-                    <span id="counterText">Hai selezionato <strong>0</strong> su <strong id="maxCount"><?= $categorie_steps[0]['max_scelte'] ?? 5 ?></strong> laboratori</span>
+                    <span id="counterText">Hai selezionato <strong>0</strong> su <strong id="maxCount"><?= $categorie_steps[0]['max_scelte'] ?? 5 ?></strong> attivit&agrave;</span>
                 </div>
                 <?php endif; ?>
 
